@@ -18,7 +18,7 @@ public class SwingDemo
 
 
         // 设置窗口的其他参数，如窗口大小
-        frame.setSize(400, 300);
+        frame.setSize(600, 300);
 
         // 显示窗口
         frame.setVisible(true);
