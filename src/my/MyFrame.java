@@ -48,14 +48,6 @@ public class MyFrame extends JFrame
             String sql;
             sql = "delete from yc_villagers";
             stmt.execute(sql);
-//            if (stmt.execute(sql))
-//            {
-//                System.out.println("成功!");
-//            }
-//            else
-//            {
-//                System.out.println("失败!");
-//            }
 
             // 完成后关闭
             stmt.close();
@@ -116,12 +108,80 @@ public class MyFrame extends JFrame
         JMenu operateMenu = new JMenu("操作");
         menubar.add(operateMenu);
         JMenuItem refreshVillageInfo = new JMenuItem("刷新");
-        JMenuItem helpManual = new JMenuItem("打开帮助");
+        JMenuItem deleteSelectedItem = new JMenuItem("删除数据");
+        JMenuItem test2 = new JMenuItem("测试（暂未使用）");
+
         operateMenu.add(refreshVillageInfo);
-        operateMenu.add(helpManual);
+        operateMenu.add(test2);
+        operateMenu.add(deleteSelectedItem);
+
+        // 删除数据
+        deleteSelectedItem.addActionListener(e ->
+        {
+            // 弹出对话框确认
+            int select = JOptionPane.showConfirmDialog(this,
+                    "删除操作将会将这条记录从数据库中永久删除且无法恢复，是否确认删除？",
+                    "确认", JOptionPane.YES_NO_OPTION);
+            if (select != 0) return; // 0号按钮是'确定'按钮
+
+            Connection conn = null;
+            Statement stmt = null;
+            try
+            {
+                Class.forName(JDBC_DRIVER);
+                conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                stmt = conn.createStatement();
+
+                int[] count = table.getSelectedRows();//获取你选中的行号（记录）
+                for (int i = 0; i < count.length; i++)
+                {
+                    // 读取身份证号字段的值
+                    String id = table.getValueAt(count[i], 3).toString();
+                    System.out.println(id);
+
+                    String sql = "delete from yc_villagers where id = \"" + id + "\";";
+                    System.out.printf("%s 被执行\n", sql);
+                    stmt.execute(sql);
+                }
+
+                stmt.close();
+                conn.close();
+            } catch (SQLException se)
+            {
+                // 处理 JDBC 错误
+                se.printStackTrace();
+            } catch (Exception eee)
+            {
+                // 处理 Class.forName 错误
+                eee.printStackTrace();
+            } finally
+            {
+                // 关闭资源
+                try
+                {
+                    if (stmt != null) stmt.close();
+                } catch (SQLException se2)
+                {
+                }// 什么都不做
+                try
+                {
+                    if (conn != null) conn.close();
+                } catch (SQLException se)
+                {
+                    se.printStackTrace();
+                }
+            }
+
+
+            // TODO：删除后要更新数据
+            UpdateVillagerData();
+        });
 
         // 更新村民数据（重新执行查询）
         refreshVillageInfo.addActionListener(e -> UpdateVillagerData());
+
+        // 删除数据操作
+//        deleteData.addActionListener(e -> onDelete());
 
         // 退出事件响应
         fileExitCmd.addActionListener(e -> System.exit(0));
@@ -260,7 +320,9 @@ public class MyFrame extends JFrame
         if (rows.length == 0) return;
 
         // 弹出对话框确认
-        int select = JOptionPane.showConfirmDialog(this, "是否确认删除?", "确认", JOptionPane.YES_NO_OPTION);
+        int select = JOptionPane.showConfirmDialog(this,
+                "删除操作将会将这条记录从数据库中永久删除且无法恢复，是否确认删除？",
+                "确认", JOptionPane.YES_NO_OPTION);
         if (select != 0) return; // 0号按钮是'确定'按钮
 
         // 技巧：从后往前删除
