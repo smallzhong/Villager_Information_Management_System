@@ -121,7 +121,7 @@ public class MyFrame extends JFrame
         operateMenu.add(helpManual);
 
         // 更新村民数据（重新执行查询）
-        refreshVillageInfo.addActionListener(e->UpdateVillagerData());
+        refreshVillageInfo.addActionListener(e -> UpdateVillagerData());
 
         // 退出事件响应
         fileExitCmd.addActionListener(e -> System.exit(0));
@@ -253,8 +253,33 @@ public class MyFrame extends JFrame
 //        System.out.println("Goodbye!");
     }
 
+    private void onDelete()
+    {
+        // 获取选中的行的索引
+        int[] rows = table.getSelectedRows();
+        if (rows.length == 0) return;
+
+        // 弹出对话框确认
+        int select = JOptionPane.showConfirmDialog(this, "是否确认删除?", "确认", JOptionPane.YES_NO_OPTION);
+        if (select != 0) return; // 0号按钮是'确定'按钮
+
+        // 技巧：从后往前删除
+        for (int i = rows.length - 1; i >= 0; i--)
+        {
+            tableModel.removeRow(rows[i]);
+        }
+    }
+
     void UpdateVillagerData()
     {
+        // 先把表格中全部的数据删除，避免重复数据出现
+        int rows_ct = table.getRowCount();
+        // 从后往前删除，防止下标变化导致删除失败
+        for (int i = rows_ct - 1; i >= 0; i--)
+        {
+            tableModel.removeRow(i);
+        }
+
         Connection conn = null;
         Statement stmt = null;
         try
