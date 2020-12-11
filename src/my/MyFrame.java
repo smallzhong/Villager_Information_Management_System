@@ -1,16 +1,7 @@
 package my;
 
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.*;
 import java.util.Vector;
 
 import javax.swing.*;
@@ -19,39 +10,33 @@ import javax.swing.table.DefaultTableModel;
 
 public class MyFrame extends JFrame
 {
-    JPanel root = new JPanel();
-    // Model : 负责数据
+    // 主布局，卡片
+    JPanel cards = new JPanel();
+
+    // 表格数据
     DefaultTableModel tableModel = new DefaultTableModel();
 
-    // View : 负责显示， 创建JTable的时候指定一个Model
+    // 显示表格
     JTable table = new JTable(tableModel);
-
 
     public MyFrame(String title)
     {
         super("8003119075 钟雨初");
 
-        // Content Pane
-
-        this.setContentPane(root);
-        root.setLayout(new BorderLayout());
-
-        // 添加菜单
         JMenuBar menubar = new JMenuBar();
         this.setJMenuBar(menubar);
 
         // 菜单 文件
-        JMenu fileMenu = new JMenu("文件");
+        JMenu fileMenu = new JMenu("视图");
         menubar.add(fileMenu);
-        JMenuItem fileOpenCmd = new JMenuItem("打开");
-        JMenuItem fileSaveCmd = new JMenuItem("保存");
-        JMenuItem fileSaveAsCmd = new JMenuItem("另存为...");
+        JMenuItem fileOpenCmd = new JMenuItem("视图1");
+        JMenuItem fileSaveCmd = new JMenuItem("视图2");
+        JMenuItem fileSaveAsCmd = new JMenuItem("村民信息");
         fileMenu.add(fileOpenCmd);
         fileMenu.add(fileSaveCmd);
         fileMenu.add(fileSaveAsCmd);
 
         JMenuItem fileExitCmd = new JMenuItem("退出");
-        // 添加一条分割线
         fileMenu.addSeparator();
         fileMenu.add(fileExitCmd);
 
@@ -63,44 +48,131 @@ public class MyFrame extends JFrame
         helpMenu.add(helpAbout);
         helpMenu.add(helpManual);
 
-        // 菜单事件响应
+        // 退出事件响应
         fileExitCmd.addActionListener(e -> System.exit(0));
+        // 切换到村民信息视图
+        fileOpenCmd.addActionListener(e -> switchCard(1));
+        fileSaveCmd.addActionListener(e -> switchCard(0));
+        fileSaveAsCmd.addActionListener(e->switchCard(2));
+//        fileOpenCmd.addActionListener(e ->
+//                JOptionPane.showMessageDialog(null, "钟雨初", "InfoBox: ", JOptionPane.INFORMATION_MESSAGE));
 
-        // 设置表格
-        this.initTable();
+        Container contentPane = getContentPane();
+
+        // 给顶层容器，设置 BorderLayout
+        contentPane.setLayout(new BorderLayout());
+        contentPane.add(cards, BorderLayout.CENTER);
+
+        // 两张卡片
+        JPanel p1 = panel1();
+        JPanel p2 = panel2();
+        JPanel p3 = panel3();
+
+        cards.setLayout(new CardLayout());
+        cards.add(p1, "buttons"); // 添加第一张卡片, 名字叫 buttons
+        cards.add(p2, "text"); // 添加第二张卡片，名字叫 text
+        cards.add(p3, "table");
+
+        switchCard(1);
+        switchCard(0);
+        switchCard(2);
     }
 
-    private void initTable()
+    JPanel panel3()
     {
-        // 设置表格
+        // Content Pane
+        JPanel root = new JPanel();
+//        this.setContentPane(root); // 设置为默认背景
+        root.setLayout(new BorderLayout());
+
+        // 添加到主界面
         JScrollPane scrollPane = new JScrollPane(table);
         table.setFillsViewportHeight(true);
         table.setRowSelectionAllowed(true); // 整行选择
         root.add(scrollPane, BorderLayout.CENTER);
 
-        // 初始化设置：添加4列
+        // 初始化设置：添加5列
+        tableModel.addColumn("学号");
         tableModel.addColumn("姓名");
         tableModel.addColumn("性别");
-        tableModel.addColumn("身份证号");
-        tableModel.addColumn("居住地址");
-        tableModel.addColumn("电话号码");
+        tableModel.addColumn("出生日期");
+        tableModel.addColumn("手机号");
 
-        Villager villager = new Villager();
-        villager.id = "444444444444444444";
-        villager.sex = "男";
-        villager.addr = "南昌大学青山湖校区";
-        villager.name = "钟雨初";
-        villager.phone_number = "13333333333";
+        // 添加数据行
+        Student stu = new Student();
+        stu.id = "20180001";
+        stu.name = "li";
+        stu.sex = true;
+        stu.cellphone = "13810012345";
+        stu.birthday = "1982-2-2";
+        addTableRow(stu);
 
-        addTableRow(villager);
+        Student stu2 = new Student();
+        stu2.id = "20180002";
+        stu2.name = "wang";
+        stu2.sex = false;
+        stu2.cellphone = "14788889999";
+        stu2.birthday = "1982-2-3";
+        addTableRow(stu2);
+
+        return root;
     }
 
-    private void addTableRow(Villager villager)
+    private void addTableRow(Student item)
     {
+        // java.util.Vector 是个范型 ，表示数组
         Vector<Object> rowData = new Vector<>();
-        rowData.add(villager.name);
-        rowData.add(villager.sex);
-        rowData.add(villager.id);
+        rowData.add(item.id);
+        rowData.add(item.name);
+        rowData.add(item.sex);
+        rowData.add(item.birthday);
+        rowData.add(item.cellphone);
         tableModel.addRow(rowData); // 添加一行
+
+//		Object[] rowData = new Object[5];
+//		rowData[0] = item.id;
+//		rowData[1] = item.name;
+//		rowData[2] = item.sex;
+//		rowData[3] = item.birthday;
+//		rowData[4] = item.cellphone;
+//		tableModel.addRow( rowData );
+    }
+
+    JPanel panel1()
+    {
+        // 创建第一个面板
+        JPanel p1 = new JPanel();
+        p1.add(new JButton("红"));
+        p1.add(new JButton("绿"));
+        p1.add(new JButton("蓝"));
+
+        return p1;
+    }
+
+    JPanel panel2()
+    {
+        // 创建第二个面板
+        JPanel p2 = new JPanel();
+        p2.add(new JLabel("输入"));
+        p2.add(new JTextField(20));
+        return p2;
+    }
+
+    // 切换到cardnum卡片
+    public void switchCard(int cardnum)
+    {
+        CardLayout cardLayout = (CardLayout) cards.getLayout();
+        if (cardnum == 1)
+        {
+            cardLayout.show(cards, "buttons");
+        }
+        else if (cardnum == 0)
+        {
+            cardLayout.show(cards, "text");
+        }
+        else if (cardnum == 2)
+        {
+            cardLayout.show(cards, "table");
+        }
     }
 }
