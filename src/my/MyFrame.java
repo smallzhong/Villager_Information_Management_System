@@ -29,7 +29,7 @@ public class MyFrame extends JFrame
     // 显示表格
     JTable table = new JTable(tableModel);
 
-    void initsql()
+    void testsql()
     {
         Connection conn = null;
         Statement stmt = null;
@@ -39,32 +39,25 @@ public class MyFrame extends JFrame
             Class.forName(JDBC_DRIVER);
 
             // 打开链接
-            System.out.println("连接数据库...");
+//            System.out.println("连接数据库...");
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             // 执行查询
-            System.out.println(" 实例化Statement对象...");
+//            System.out.println(" 实例化Statement对象...");
             stmt = conn.createStatement();
             String sql;
-            sql = "SELECT id, name, url FROM websites";
-            ResultSet rs = stmt.executeQuery(sql);
+            sql = "delete from yc_villagers";
+            stmt.execute(sql);
+//            if (stmt.execute(sql))
+//            {
+//                System.out.println("成功!");
+//            }
+//            else
+//            {
+//                System.out.println("失败!");
+//            }
 
-            // 展开结果集数据库
-            while (rs.next())
-            {
-                // 通过字段检索
-                int id = rs.getInt("id");
-                String name = rs.getString("name");
-                String url = rs.getString("url");
-
-                // 输出数据
-                System.out.print("ID: " + id);
-                System.out.print(", 站点名称: " + name);
-                System.out.print(", 站点 URL: " + url);
-                System.out.print("\n");
-            }
             // 完成后关闭
-            rs.close();
             stmt.close();
             conn.close();
         } catch (SQLException se)
@@ -92,14 +85,15 @@ public class MyFrame extends JFrame
                 se.printStackTrace();
             }
         }
-        System.out.println("Goodbye!");
+//        System.out.println("Goodbye!");
     }
 
     public MyFrame(String title)
     {
         super("8003119075 钟雨初");
 
-//        initsql();
+        // 测试
+//        testsql();
 
         JMenuBar menubar = new JMenuBar();
         this.setJMenuBar(menubar);
@@ -119,12 +113,15 @@ public class MyFrame extends JFrame
         fileMenu.add(fileExitCmd);
 
         // 帮助菜单
-        JMenu helpMenu = new JMenu("帮助");
-        menubar.add(helpMenu);
-        JMenuItem helpAbout = new JMenuItem("关于");
+        JMenu operateMenu = new JMenu("操作");
+        menubar.add(operateMenu);
+        JMenuItem refreshVillageInfo = new JMenuItem("刷新");
         JMenuItem helpManual = new JMenuItem("打开帮助");
-        helpMenu.add(helpAbout);
-        helpMenu.add(helpManual);
+        operateMenu.add(refreshVillageInfo);
+        operateMenu.add(helpManual);
+
+        // 更新村民数据（重新执行查询）
+        refreshVillageInfo.addActionListener(e->UpdateVillagerData());
 
         // 退出事件响应
         fileExitCmd.addActionListener(e -> System.exit(0));
@@ -177,22 +174,13 @@ public class MyFrame extends JFrame
         tableModel.addColumn("地址");
         tableModel.addColumn("电话号码");
 
-        setTableInfo();
+        setVillagerTableInfo();
 
         return root;
     }
 
-    void setTableInfo()
+    void setVillagerTableInfo()
     {
-        // 添加数据行
-//        Villager villager = new Villager();
-//        villager.village = "那龙";
-//        villager.sex = "男";
-//        villager.name = "钟雨初";
-//        villager.id = "8003119075";
-//        villager.addr = "南昌大学软件学院";
-//        villager.phone_number = "18070503122";
-//        addTableRow(villager);
         Connection conn = null;
         Statement stmt = null;
         try
@@ -201,11 +189,11 @@ public class MyFrame extends JFrame
             Class.forName(JDBC_DRIVER);
 
             // 打开链接
-            System.out.println("连接数据库...");
+//            System.out.println("连接数据库...");
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             // 执行查询
-            System.out.println(" 实例化Statement对象...");
+//            System.out.println(" 实例化Statement对象...");
             stmt = conn.createStatement();
             String sql;
             sql = "SELECT * FROM yc_villagers";
@@ -231,17 +219,8 @@ public class MyFrame extends JFrame
                 rowData.add(addr);
                 rowData.add(phone_number);
                 tableModel.addRow(rowData);
-
-//                int id = rs.getInt("id");
-//                String name = rs.getString("name");
-//                String url = rs.getString("url");
-
-//                // 输出数据
-//                System.out.print("ID: " + id);
-//                System.out.print(", 站点名称: " + name);
-//                System.out.print(", 站点 URL: " + url);
-//                System.out.print("\n");
             }
+
             // 完成后关闭
             rs.close();
             stmt.close();
@@ -271,7 +250,81 @@ public class MyFrame extends JFrame
                 se.printStackTrace();
             }
         }
-        System.out.println("Goodbye!");
+//        System.out.println("Goodbye!");
+    }
+
+    void UpdateVillagerData()
+    {
+        Connection conn = null;
+        Statement stmt = null;
+        try
+        {
+            // 注册 JDBC 驱动
+            Class.forName(JDBC_DRIVER);
+
+            // 打开链接
+//            System.out.println("连接数据库...");
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+            // 执行查询
+//            System.out.println(" 实例化Statement对象...");
+            stmt = conn.createStatement();
+            String sql;
+            sql = "SELECT * FROM yc_villagers";
+            ResultSet rs = stmt.executeQuery(sql);
+
+            // 展开结果集数据库
+            while (rs.next())
+            {
+                // 通过字段检索
+                String village = rs.getString("village");
+                String name = rs.getString("name");
+                String sex = rs.getString("sex");
+                String id = rs.getString("id");
+                String addr = rs.getString("addr");
+                String phone_number = rs.getString("phone_number");
+
+                // 添加到table中去
+                Vector<Object> rowData = new Vector<>();
+                rowData.add(village);
+                rowData.add(name);
+                rowData.add(sex);
+                rowData.add(id);
+                rowData.add(addr);
+                rowData.add(phone_number);
+                tableModel.addRow(rowData);
+            }
+
+            // 完成后关闭
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException se)
+        {
+            // 处理 JDBC 错误
+            se.printStackTrace();
+        } catch (Exception e)
+        {
+            // 处理 Class.forName 错误
+            e.printStackTrace();
+        } finally
+        {
+            // 关闭资源
+            try
+            {
+                if (stmt != null) stmt.close();
+            } catch (SQLException se2)
+            {
+            }// 什么都不做
+            try
+            {
+                if (conn != null) conn.close();
+            } catch (SQLException se)
+            {
+                se.printStackTrace();
+            }
+        }
+//        System.out.println("Goodbye!");
     }
 
     void addTableRow(Villager item)
@@ -286,25 +339,6 @@ public class MyFrame extends JFrame
         tableModel.addRow(rowData);
     }
 
-//    private void addTableRow(Student item)
-//    {
-//        // java.util.Vector 是个范型 ，表示数组
-//        Vector<Object> rowData = new Vector<>();
-//        rowData.add(item.id);
-//        rowData.add(item.name);
-//        rowData.add(item.sex);
-//        rowData.add(item.birthday);
-//        rowData.add(item.cellphone);
-//        tableModel.addRow(rowData); // 添加一行
-//
-////		Object[] rowData = new Object[5];
-////		rowData[0] = item.id;
-////		rowData[1] = item.name;
-////		rowData[2] = item.sex;
-////		rowData[3] = item.birthday;
-////		rowData[4] = item.cellphone;
-////		tableModel.addRow( rowData );
-//    }
 
     JPanel panel1()
     {
