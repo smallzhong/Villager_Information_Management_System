@@ -1,5 +1,7 @@
 package my;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.*;
 
 import java.awt.*;
@@ -18,7 +20,6 @@ public class MyFrame extends JFrame
     // 数据库的用户名与密码
     static final String USER = "root";
     static final String PASS = "123456";
-
 
     // 主布局，卡片
     JPanel cards = new JPanel();
@@ -83,9 +84,6 @@ public class MyFrame extends JFrame
     public MyFrame(String title)
     {
         super("8003119075 钟雨初");
-
-        // 测试
-//        testsql();
 
         JMenuBar menubar = new JMenuBar();
         this.setJMenuBar(menubar);
@@ -243,7 +241,93 @@ public class MyFrame extends JFrame
 
         setVillagerTableInfo();
 
+        // 添加表格的右键响应事件
+        table.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                if (e.getButton() == MouseEvent.BUTTON3)
+                    showContextMenu(e);
+            }
+        });
+
         return root;
+    }
+
+    void showContextMenu(MouseEvent e)
+    {
+        // 弹出右键菜单
+        JPopupMenu menu = new JPopupMenu();
+        JMenuItem detailMenuCmd = new JMenuItem("删除选中项");
+        menu.add(detailMenuCmd);
+        detailMenuCmd.addActionListener(ee ->
+        {
+            if (table.getSelectedRows().length == 0)
+            {
+                JOptionPane.showMessageDialog(null,
+                        "您并未选中任何一行数据！", "错误", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
+            // 弹出对话框确认
+            int select = JOptionPane.showConfirmDialog(this,
+                    "删除操作将会将这条记录从数据库中永久删除且无法恢复，是否确认删除？",
+                    "确认", JOptionPane.YES_NO_OPTION);
+            if (select != 0) return; // 0号按钮是'确定'按钮
+
+            Connection conn = null;
+            Statement stmt = null;
+            try
+            {
+                Class.forName(JDBC_DRIVER);
+                conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                stmt = conn.createStatement();
+
+                int[] count = table.getSelectedRows(); // 获取你选中的行号（记录）
+                for (int i = 0; i < count.length; i++)
+                {
+                    // 读取身份证号字段的值
+                    String id = table.getValueAt(count[i], 3).toString();
+                    System.out.println(id);
+
+                    String sql = "delete from yc_villagers where id = \"" + id + "\";";
+                    System.out.printf("%s 被执行\n", sql);
+                    stmt.execute(sql);
+                }
+
+                stmt.close();
+                conn.close();
+            } catch (SQLException se)
+            {
+                // 处理 JDBC 错误
+                se.printStackTrace();
+            } catch (Exception eee)
+            {
+                // 处理 Class.forName 错误
+                eee.printStackTrace();
+            } finally
+            {
+                // 关闭资源
+                try
+                {
+                    if (stmt != null) stmt.close();
+                } catch (SQLException se2)
+                {
+                }// 什么都不做
+                try
+                {
+                    if (conn != null) conn.close();
+                } catch (SQLException se)
+                {
+                    se.printStackTrace();
+                }
+            }
+
+            UpdateVillagerData();
+        });
+
+        menu.show(e.getComponent(), e.getX(), e.getY());
     }
 
     void setVillagerTableInfo()
