@@ -8,6 +8,7 @@ package my;
 //tableModel.addColumn("电话号码");
 public class Villager
 {
+    String village; // 表示其属于哪个村庄
     String name;
     String sex;
     String id;
