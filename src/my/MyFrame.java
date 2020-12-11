@@ -118,6 +118,13 @@ public class MyFrame extends JFrame
         // 删除数据
         deleteSelectedItem.addActionListener(e ->
         {
+            if (table.getSelectedRows().length == 0)
+            {
+                JOptionPane.showMessageDialog(null,
+                        "您并未选中任何一行数据！", "错误", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
             // 弹出对话框确认
             int select = JOptionPane.showConfirmDialog(this,
                     "删除操作将会将这条记录从数据库中永久删除且无法恢复，是否确认删除？",
@@ -132,7 +139,7 @@ public class MyFrame extends JFrame
                 conn = DriverManager.getConnection(DB_URL, USER, PASS);
                 stmt = conn.createStatement();
 
-                int[] count = table.getSelectedRows();//获取你选中的行号（记录）
+                int[] count = table.getSelectedRows(); // 获取你选中的行号（记录）
                 for (int i = 0; i < count.length; i++)
                 {
                     // 读取身份证号字段的值
@@ -320,6 +327,7 @@ public class MyFrame extends JFrame
         if (rows.length == 0) return;
 
         // 弹出对话框确认
+
         int select = JOptionPane.showConfirmDialog(this,
                 "删除操作将会将这条记录从数据库中永久删除且无法恢复，是否确认删除？",
                 "确认", JOptionPane.YES_NO_OPTION);
