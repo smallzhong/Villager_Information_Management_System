@@ -150,6 +150,19 @@ public class EditVillagerDialog extends JDialog
             JOptionPane.showMessageDialog(this, "性别不能为空！");
             return false;
         }
+
+        // 判断身份证号中有无非法字符（应全为数字或者X或者x）
+        for (int i = 0; i < v.id.length() - 1; i++)
+        {
+            // 如果发现不是字符或者不是X和x
+            if (!Character.isDigit(v.id.charAt(i)) || v.id.charAt(i) != 'X' || v.id.charAt(i) != 'x')
+            {
+                JOptionPane.showMessageDialog(this, "身份证号的格式不合法，请重新输入！");
+                return false;
+            }
+        }
+
+
         if (v.id.isEmpty())
         {
             JOptionPane.showMessageDialog(this, "身份证号为空！");
