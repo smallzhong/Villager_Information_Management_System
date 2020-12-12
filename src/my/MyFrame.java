@@ -450,10 +450,93 @@ public class MyFrame extends JFrame
             // 设置弹出的对话框中的值为默认值
             villagerDialog.setValue(v);
 
-            if (villagerDialog.exec())
-                System.out.println("villagerDialog.exec() = true");
+            // 如果没有选确定，则直接返回
+            if (!villagerDialog.exec())
+                return;
             else
-                System.out.println("villagerDialog.exec() = false");
+            {
+                // 重新取回数据
+                Villager v2 = villagerDialog.getValue();
+                if (v2.equals(v))
+                {
+                    // 如果并没有对数据进行任何修改
+                    JOptionPane.showMessageDialog(null,
+                            "您并没有对数据进行修改！", "错误", JOptionPane.INFORMATION_MESSAGE);
+                    return;
+                }
+                else
+                {
+                    // 连接数据库进行update
+                    if (true)
+                    {
+                        Connection conn = null;
+                        Statement stmt = null;
+                        try
+                        {
+                            Class.forName(JDBC_DRIVER);
+                            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                            stmt = conn.createStatement();
+
+                            // 这里进行操作
+                            PreparedStatement ps =
+                                    conn.prepareStatement("UPDATE yc_villagers " +
+                                            "SET village=?, name=?, sex=?, id=?, addr=?, phone_number=? WHERE id=?");
+                            // 注意索引从1开始
+                            ps.setString(1, v2.village);
+                            ps.setString(2, v2.name);
+                            ps.setString(3, v2.sex);
+                            ps.setString(4, v2.id);
+                            ps.setString(5, v2.addr);
+                            ps.setString(6, v2.phone_number);
+                            ps.setString(7, v.id);
+
+                            int n = ps.executeUpdate(); // 返回更新的行数
+                            System.out.printf("更新了%d行\n", n);
+//                            int[] count = table.getSelectedRows(); // 获取你选中的行号（记录）
+//
+//                            for (int i = 0; i < count.length; i++)
+//                            {
+//                                // 读取身份证号字段的值
+//                                String id = table.getValueAt(count[i], 3).toString();
+//                                System.out.println(id);
+//
+//                                String sql = "delete from yc_villagers where id = \"" + id + "\";";
+//                                System.out.printf("%s 被执行\n", sql);
+//                                stmt.execute(sql);
+//                            }
+
+                            stmt.close();
+                            conn.close();
+                        } catch (SQLException se)
+                        {
+                            // 处理 JDBC 错误
+                            se.printStackTrace();
+                        } catch (Exception eee)
+                        {
+                            // 处理 Class.forName 错误
+                            eee.printStackTrace();
+                        } finally
+                        {
+                            // 关闭资源
+                            try
+                            {
+                                if (stmt != null) stmt.close();
+                            } catch (SQLException se2)
+                            {
+                            }// 什么都不做
+                            try
+                            {
+                                if (conn != null) conn.close();
+                            } catch (SQLException se)
+                            {
+                                se.printStackTrace();
+                            }
+                        }
+
+                        UpdateVillagerData();
+                    }
+                }
+            }
 
         });
 
@@ -525,6 +608,17 @@ public class MyFrame extends JFrame
         });
 
         menu.show(e.getComponent(), e.getX(), e.getY());
+    }
+
+    // 更新一条数据
+    private boolean updateOneData()
+    {
+        return true;
+    }
+
+    private  boolean updateMultipleData()
+    {
+        return true;
     }
 
     void setVillagerTableInfo()
