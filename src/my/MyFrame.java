@@ -146,7 +146,7 @@ public class MyFrame extends JFrame
         // 测试按钮
         test2.addActionListener(e ->
         {
-            test();
+//            test();
 //            EditVillagerDialog ttt = new EditVillagerDialog(this);
 //            if (ttt.exec() == true)
 //                System.out.println("true");
