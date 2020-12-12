@@ -143,16 +143,7 @@ public class MyFrame extends JFrame
         // 测试按钮
         test2.addActionListener(e ->
         {
-//            test();
-//            EditVillagerDialog ttt = new EditVillagerDialog(this);
-//            if (ttt.exec() == true)
-//                System.out.println("true");
-//            else
-//                System.out.println("false");
-//
-//            Student ret = ttt.getValue();
-//            System.out.println(ret);
-
+            
         });
 
         // 添加数据
@@ -168,19 +159,19 @@ public class MyFrame extends JFrame
             {
                 Villager v = villagerDialog.getValue();
 
-                // 插入数据
+                // 录入数据
                 if (addOneData(v) == true)
                 {
                     UpdateVillagerData();
                     JOptionPane.showMessageDialog(null,
-                            v.name + "的信息插入成功！",
+                            v.name + "的信息录入成功！",
                             "错误", JOptionPane.INFORMATION_MESSAGE);
 
                 }
                 else
                 {
                     JOptionPane.showMessageDialog(null,
-                            "插入数据出错！请检查数据有效性！", "错误", JOptionPane.INFORMATION_MESSAGE);
+                            "录入数据出错！请检查数据有效性！", "错误", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         });
@@ -330,7 +321,7 @@ public class MyFrame extends JFrame
         {
             // 处理 JDBC 错误
             JOptionPane.showMessageDialog(null,
-                    "插入数据错误！两个人的身份证号不能一致，请检查您的输入！",
+                    "录入数据错误！两个人的身份证号不能一致，请检查您的输入！",
                     "出错啦", JOptionPane.INFORMATION_MESSAGE);
             se.printStackTrace();
             return false;
@@ -359,7 +350,7 @@ public class MyFrame extends JFrame
             }
         }
 
-        // 插入数据之后更新表格
+        // 录入数据之后更新表格
         UpdateVillagerData();
 
         // TODO:这里要判断是否成功，失败则返回false
@@ -433,19 +424,18 @@ public class MyFrame extends JFrame
             {
                 Villager v = villagerDialog.getValue();
 
-                // 插入数据
+                // 录入数据
                 if (addOneData(v) == true)
                 {
                     UpdateVillagerData();
                     JOptionPane.showMessageDialog(null,
-                            v.name + "的信息插入成功！",
+                            v.name + "的信息录入成功！",
                             "错误", JOptionPane.INFORMATION_MESSAGE);
-
                 }
                 else
                 {
                     JOptionPane.showMessageDialog(null,
-                            "插入数据出错！请检查数据有效性！", "错误", JOptionPane.INFORMATION_MESSAGE);
+                            "录入数据出错！请检查数据有效性！", "错误", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         });
