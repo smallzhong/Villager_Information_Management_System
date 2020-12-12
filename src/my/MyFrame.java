@@ -415,8 +415,40 @@ public class MyFrame extends JFrame
         JPopupMenu menu = new JPopupMenu();
         JMenuItem detailMenuCmd = new JMenuItem("删除选中项");
         JMenuItem updateMenuCmd = new JMenuItem("修改选中项");
+        JMenuItem addMenuCmd = new JMenuItem("增加一项记录");
         menu.add(detailMenuCmd);
         menu.add(updateMenuCmd);
+        menu.add(addMenuCmd);
+
+        addMenuCmd.addActionListener(ee ->
+        {
+            // 添加数据
+            EditVillagerDialog villagerDialog = new EditVillagerDialog(this);
+
+            // 如果用户点击了取消或者关闭了窗口，则直接返回
+            if (villagerDialog.exec() == false)
+                return;
+
+            else
+            {
+                Villager v = villagerDialog.getValue();
+
+                // 插入数据
+                if (addOneData(v) == true)
+                {
+                    UpdateVillagerData();
+                    JOptionPane.showMessageDialog(null,
+                            v.name + "的信息插入成功！",
+                            "错误", JOptionPane.INFORMATION_MESSAGE);
+
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null,
+                            "插入数据出错！请检查数据有效性！", "错误", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        });
 
         updateMenuCmd.addActionListener(ee ->
         {
@@ -492,7 +524,22 @@ public class MyFrame extends JFrame
                             ps.setString(7, v.id);
 
                             int n = ps.executeUpdate(); // 返回更新的行数
-                            System.out.printf("更新了%d行\n", n);
+                            if (n == 1)
+                            {
+                                JOptionPane.showMessageDialog(null,
+                                        v.name + "的数据修改成功！", "错误", JOptionPane.INFORMATION_MESSAGE);
+                            }
+                            else if (n < 1)
+                            {
+                                JOptionPane.showMessageDialog(null,
+                                        "出错！数据库中的记录并没有被成功修改！", "错误", JOptionPane.INFORMATION_MESSAGE);
+                            }
+                            else
+                            {
+                                JOptionPane.showMessageDialog(null,
+                                        "有多行数据被修改！", "错误", JOptionPane.INFORMATION_MESSAGE);
+
+                            }
 
                             stmt.close();
                             conn.close();
@@ -606,7 +653,7 @@ public class MyFrame extends JFrame
         return true;
     }
 
-    private  boolean updateMultipleData()
+    private boolean updateMultipleData()
     {
         return true;
     }
