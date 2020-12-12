@@ -40,11 +40,9 @@ public class MyFrame extends JFrame
             Class.forName(JDBC_DRIVER);
 
             // 打开链接
-//            System.out.println("连接数据库...");
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             // 执行查询
-//            System.out.println(" 实例化Statement对象...");
             stmt = conn.createStatement();
             String sql;
             sql = "delete from yc_villagers";
@@ -78,7 +76,6 @@ public class MyFrame extends JFrame
                 se.printStackTrace();
             }
         }
-//        System.out.println("Goodbye!");
     }
 
     void init()
@@ -417,7 +414,50 @@ public class MyFrame extends JFrame
         // 弹出右键菜单
         JPopupMenu menu = new JPopupMenu();
         JMenuItem detailMenuCmd = new JMenuItem("删除选中项");
+        JMenuItem updateMenuCmd = new JMenuItem("修改选中项");
         menu.add(detailMenuCmd);
+        menu.add(updateMenuCmd);
+
+        updateMenuCmd.addActionListener(ee ->
+        {
+            if (table.getSelectedRows().length == 0)
+            {
+                JOptionPane.showMessageDialog(null,
+                        "您并未选中任何一行数据！", "错误", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
+            int[] count = table.getSelectedRows(); // 获取你选中的行号（记录）
+            if (count.length != 1)
+            {
+                JOptionPane.showMessageDialog(null,
+                        "一次只能修改一行数据，请只选择一行！", "错误", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
+            int idx = count[0];
+            EditVillagerDialog villagerDialog = new EditVillagerDialog(this);
+
+
+            Villager v = new Villager();
+            v.village = (String) table.getValueAt(idx, 0);
+            v.name = (String) table.getValueAt(idx, 1);
+            v.sex = (String) table.getValueAt(idx, 2);
+            v.id = (String) table.getValueAt(idx, 3);
+            v.addr = (String) table.getValueAt(idx, 4);
+            v.phone_number = (String) table.getValueAt(idx, 5);
+
+            // 设置弹出的对话框中的值为默认值
+            villagerDialog.setValue(v);
+
+            if (villagerDialog.exec())
+                System.out.println("villagerDialog.exec() = true");
+            else
+                System.out.println("villagerDialog.exec() = false");
+
+        });
+
+
         detailMenuCmd.addActionListener(ee ->
         {
             if (table.getSelectedRows().length == 0)

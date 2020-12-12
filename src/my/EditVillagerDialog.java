@@ -186,6 +186,31 @@ public class EditVillagerDialog extends JDialog
         return true;
     }
 
+    public boolean setValue(Villager v)
+    {
+        villageField.setText(v.village);
+        nameField.setText(v.name);
+
+        if (v.sex.equals("男"))
+        {
+            sexField.setSelectedIndex(1);
+        }
+        else if (v.sex.equals("女"))
+        {
+            sexField.setSelectedIndex(0);
+        }
+        else
+        {
+            System.out.println("v.sex错误！");
+        }
+
+        idField.setText(v.id);
+        addrField.setText(v.addr);
+        phone_numberFiled.setText(v.phone_number);
+
+        return true;
+    }
+
     // 设置初始值
 //    public void setValue(Student v)
 //    {
