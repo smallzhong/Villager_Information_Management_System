@@ -83,12 +83,27 @@ public class MyFrame extends JFrame
 
     void init()
     {
+
 //        EditStudentDialog a = new EditStudentDialog(this);
 //        a.setVisible(true);
 //        Student s = a.getValue();
 
         // 设置表格为不可编辑
 //        table.setEnabled(false);
+    }
+
+    // 测试函数
+    void test()
+    {
+        Villager v = new Villager();
+        v.village = "村庄3";
+        v.name = "村庄3";
+        v.sex = "村庄3";
+        v.id = "123123123123";
+        v.addr = "村庄3";
+        v.phone_number = "村庄3";
+
+        this.addOneData(v);
     }
 
     public MyFrame(String title)
@@ -131,84 +146,111 @@ public class MyFrame extends JFrame
         // 测试按钮
         test2.addActionListener(e ->
         {
-            EditVillagerDialog ttt = new EditVillagerDialog(this);
-            if (ttt.exec() == true)
-                System.out.println("true");
-            else
-                System.out.println("false");
-
-            Student ret = ttt.getValue();
-            System.out.println(ret);
+            test();
+//            EditVillagerDialog ttt = new EditVillagerDialog(this);
+//            if (ttt.exec() == true)
+//                System.out.println("true");
+//            else
+//                System.out.println("false");
+//
+//            Student ret = ttt.getValue();
+//            System.out.println(ret);
 
         });
 
         // 添加数据
         addItem.addActionListener(e ->
         {
-            Connection conn = null;
-            Statement stmt = null;
-            // 准备语句
-            PreparedStatement ps = null;
+            EditVillagerDialog villagerDialog = new EditVillagerDialog(this);
 
-            try
+            // 如果用户点击了取消或者关闭了窗口，则直接返回
+            if (villagerDialog.exec() == false)
+                return;
+
+            else
             {
-                Class.forName(JDBC_DRIVER);
-                conn = DriverManager.getConnection(DB_URL, USER, PASS);
-                stmt = conn.createStatement();
+                Villager v = villagerDialog.getValue();
 
+                // 插入数据
+                if (addOneData(v) == true)
+                {
+                    UpdateVillagerData();
+                    JOptionPane.showMessageDialog(null,
+                            v.name + "的信息插入成功！",
+                            "错误", JOptionPane.INFORMATION_MESSAGE);
 
-                // 写sql语句
-                String sql = "insert into yc_villagers (village, name, sex, id, addr, phone_number) values(?, ?, ?, ?, ?, ?)";
-                ps = conn.prepareStatement(sql);
-                ps.setString(1, "村庄3");
-                ps.setString(2, "村庄3");
-                ps.setString(3, "村庄3");
-                ps.setString(4, "村庄3");
-                ps.setString(5, "村庄3");
-                ps.setString(6, "村庄3");
-
-                // 执行update操作
-                int resultSet = ps.executeUpdate();
-                System.out.printf("resultset = %d\n", resultSet);
-                if (resultSet > 0)
-                    System.out.println("success");
+                }
                 else
-                    System.out.println("failure");
-
-                stmt.close();
-                conn.close();
-            } catch (SQLException se)
-            {
-                // 处理 JDBC 错误
-                JOptionPane.showMessageDialog(null,
-                        "插入数据错误！两个人的身份证号不能一致，请检查您的输入！",
-                        "出错啦", JOptionPane.INFORMATION_MESSAGE);
-                se.printStackTrace();
-            } catch (Exception eee)
-            {
-                // 处理 Class.forName 错误
-                eee.printStackTrace();
-            } finally
-            {
-                // 关闭资源
-                try
                 {
-                    if (stmt != null) stmt.close();
-                } catch (SQLException se2)
-                {
-                }// 什么都不做
-                try
-                {
-                    if (conn != null) conn.close();
-                } catch (SQLException se)
-                {
-                    se.printStackTrace();
+                    JOptionPane.showMessageDialog(null,
+                            "插入数据出错！请检查数据有效性！", "错误", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
-
-            // 插入数据之后更新表格
-            UpdateVillagerData();
+//            Connection conn = null;
+//            Statement stmt = null;
+//            // 准备语句
+//            PreparedStatement ps = null;
+//
+//            try
+//            {
+//                Class.forName(JDBC_DRIVER);
+//                conn = DriverManager.getConnection(DB_URL, USER, PASS);
+//                stmt = conn.createStatement();
+//
+//
+//                // 写sql语句
+//                String sql = "insert into yc_villagers (village, name, sex, id, addr, phone_number) values(?, ?, ?, ?, ?, ?)";
+//                ps = conn.prepareStatement(sql);
+//                ps.setString(1, "村庄3");
+//                ps.setString(2, "村庄3");
+//                ps.setString(3, "村庄3");
+//                ps.setString(4, "村庄3");
+//                ps.setString(5, "村庄3");
+//                ps.setString(6, "村庄3");
+//
+//                // 执行update操作
+//                int resultSet = ps.executeUpdate();
+//                System.out.printf("resultset = %d\n", resultSet);
+//                if (resultSet > 0)
+//                    System.out.println("success");
+//                else
+//                    System.out.println("failure");
+//
+//                stmt.close();
+//                conn.close();
+//            } catch (SQLException se)
+//            {
+//                // 处理 JDBC 错误
+//                JOptionPane.showMessageDialog(null,
+//                        "插入数据错误！两个人的身份证号不能一致，请检查您的输入！",
+//                        "出错啦", JOptionPane.INFORMATION_MESSAGE);
+//                se.printStackTrace();
+//            } catch (Exception eee)
+//            {
+//                // 处理 Class.forName 错误
+//                eee.printStackTrace();
+//            } finally
+//            {
+//                // 关闭资源
+//                try
+//                {
+//                    if (stmt != null) stmt.close();
+//                } catch (SQLException se2)
+//                {
+//                }// 什么都不做
+//                try
+//                {
+//                    if (conn != null) conn.close();
+//                } catch (SQLException se)
+//                {
+//                    se.printStackTrace();
+//                }
+//            }
+//
+//            // 插入数据之后更新表格
+//            UpdateVillagerData();
         });
+
 
         // 删除数据
         deleteSelectedItem.addActionListener(e ->
@@ -313,6 +355,87 @@ public class MyFrame extends JFrame
         switchCard(1);
         switchCard(0);
         switchCard(2);
+    }
+
+    // 往村民数据库中增加一条数据
+    private boolean addOneData(Villager v)
+    {
+        Connection conn = null;
+        Statement stmt = null;
+        // 准备语句
+        PreparedStatement ps = null;
+
+        try
+        {
+            Class.forName(JDBC_DRIVER);
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            stmt = conn.createStatement();
+
+
+            // 写sql语句
+            String sql = "insert into yc_villagers (village, name, sex, id, addr, phone_number) values(?, ?, ?, ?, ?, ?)";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, v.village);
+            ps.setString(2, v.name);
+            ps.setString(3, v.sex);
+            ps.setString(4, v.id);
+            ps.setString(5, v.addr);
+            ps.setString(6, v.phone_number);
+
+            // 执行update操作
+            int resultSet = ps.executeUpdate();
+            System.out.printf("resultset = %d\n", resultSet);
+            if (resultSet > 0)
+                System.out.println("success");
+            else
+                System.out.println("failure");
+
+            stmt.close();
+            conn.close();
+        } catch (SQLException se)
+        {
+            // 处理 JDBC 错误
+            JOptionPane.showMessageDialog(null,
+                    "插入数据错误！两个人的身份证号不能一致，请检查您的输入！",
+                    "出错啦", JOptionPane.INFORMATION_MESSAGE);
+            se.printStackTrace();
+            return false;
+        } catch (Exception eee)
+        {
+            // 处理 Class.forName 错误
+            eee.printStackTrace();
+            return false;
+        } finally
+        {
+            // 关闭资源
+            try
+            {
+                if (stmt != null) stmt.close();
+            } catch (SQLException se2)
+            {
+                return false;
+            }// 什么都不做
+            try
+            {
+                if (conn != null) conn.close();
+            } catch (SQLException se)
+            {
+                se.printStackTrace();
+                return false;
+            }
+        }
+
+        // 插入数据之后更新表格
+        UpdateVillagerData();
+
+        // TODO:这里要判断是否成功，失败则返回false
+        return true;
+    }
+
+    // 往村民数据库中一次添加多条数据
+    private boolean addMultipleData()
+    {
+        return true;
     }
 
     JPanel panel3()

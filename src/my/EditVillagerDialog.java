@@ -11,11 +11,12 @@ import java.awt.*;
 
 public class EditVillagerDialog extends JDialog
 {
-    public JTextField idField = new JTextField(20);
-    public JTextField nameField = new JTextField(20);
+    public JTextField villageField = new JTextField(15);
+    public JTextField nameField = new JTextField(15);
     public JComboBox<String> sexField = new JComboBox<>();
-    public JTextField phoneField = new JTextField(20);
-    public JTextField birthField = new JTextField(20);
+    public JTextField idField = new JTextField(15);
+    public JTextField addrField = new JTextField(15);
+    public JTextField phone_numberFiled = new JTextField(15);
 
     JButton okButton = new JButton("确定");
 
@@ -30,13 +31,13 @@ public class EditVillagerDialog extends JDialog
         // 设置一个容器
         AfPanel root = new AfPanel();
         this.setContentPane(root);
-        root.setLayout(new AfColumnLayout(10));
+        root.setLayout(new AfColumnLayout(7));
         root.padding(10);
 
         // 中间面板
         AfPanel main = new AfPanel();
         root.add(main, "1w"); // 占居中间区域
-        main.setLayout(new AfColumnLayout(10));
+        main.setLayout(new AfColumnLayout(7));
         main.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
         main.padding(10);
 
@@ -46,7 +47,7 @@ public class EditVillagerDialog extends JDialog
             main.add(row, "24px");
             row.setLayout(new AfRowLayout(10));
             row.add(new JLabel("村庄"), "50px");
-            row.add(idField, "1w");
+            row.add(villageField, "1w");
         }
         if (true)
         {
@@ -72,24 +73,8 @@ public class EditVillagerDialog extends JDialog
             AfPanel row = new AfPanel();
             main.add(row, "24px");
             row.setLayout(new AfRowLayout(10));
-            row.add(new JLabel("手机号"), "50px");
-            row.add(phoneField, "1w");
-        }
-        if (true)
-        {
-            AfPanel row = new AfPanel();
-            main.add(row, "24px");
-            row.setLayout(new AfRowLayout(10));
             row.add(new JLabel("身份证号"), "50px");
-            row.add(birthField, "1w");
-        }
-        if (true)
-        {
-            AfPanel row = new AfPanel();
-            main.add(row, "24px");
-            row.setLayout(new AfRowLayout(10));
-            row.add(new JLabel("身份证号"), "50px");
-            row.add(birthField, "1w");
+            row.add(idField, "1w");
         }
         if (true)
         {
@@ -97,7 +82,7 @@ public class EditVillagerDialog extends JDialog
             main.add(row, "24px");
             row.setLayout(new AfRowLayout(10));
             row.add(new JLabel("居住地址"), "50px");
-            row.add(birthField, "1w");
+            row.add(addrField, "1w");
         }
         if (true)
         {
@@ -105,7 +90,7 @@ public class EditVillagerDialog extends JDialog
             main.add(row, "24px");
             row.setLayout(new AfRowLayout(10));
             row.add(new JLabel("电话号码"), "50px");
-            row.add(birthField, "1w");
+            row.add(phone_numberFiled, "1w");
         }
 
         // 底下
@@ -149,40 +134,63 @@ public class EditVillagerDialog extends JDialog
     // 检查输入有效性
     public boolean checkValid()
     {
-        Student v = getValue();
-        if (v.id.isEmpty())
+        Villager v = getValue();
+        if (v.village.isEmpty())
         {
-            JOptionPane.showMessageDialog(this, "学号不得为空!");
+            JOptionPane.showMessageDialog(this, "村庄不能为空！");
             return false;
         }
         if (v.name.isEmpty())
         {
-            JOptionPane.showMessageDialog(this, "姓名不得为空!");
+            JOptionPane.showMessageDialog(this, "姓名不能为空！");
             return false;
         }
+        if (v.sex.isEmpty())
+        {
+            JOptionPane.showMessageDialog(this, "性别不能为空！");
+            return false;
+        }
+        if (v.id.isEmpty())
+        {
+            JOptionPane.showMessageDialog(this, "身份证号为空！");
+            return false;
+        }
+        if (v.addr.isEmpty())
+        {
+            JOptionPane.showMessageDialog(this, "居住地址不能为空！");
+            return false;
+        }
+        if (v.phone_number.isEmpty())
+        {
+            JOptionPane.showMessageDialog(this, "电话号码不能为空！");
+            return false;
+        }
+
         return true;
     }
 
     // 设置初始值
-    public void setValue(Student v)
-    {
-        idField.setEditable(false); // 学号不允许再编辑
-        idField.setText(v.id);
-        nameField.setText(v.name);
-        sexField.setSelectedIndex(v.sex ? 1 : 0); // 条件表达式
-        phoneField.setText(v.cellphone);
-        birthField.setText(v.birthday);
-    }
+//    public void setValue(Student v)
+//    {
+//        villageField.setEditable(false); // 学号不允许再编辑
+//        villageField.setText(v.id);
+//        nameField.setText(v.name);
+//        sexField.setSelectedIndex(v.sex ? 1 : 0); // 条件表达式
+//        idField.setText(v.cellphone);
+//        addrField.setText(v.birthday);
+//    }
 
     // 获取用户的输入
-    public Student getValue()
+    public Villager getValue()
     {
-        Student v = new Student();
-        v.id = idField.getText().trim();
+        Villager v = new Villager();
+        // 除掉首尾的无效字符
+        v.village = villageField.getText().trim();
         v.name = nameField.getText().trim();
-        v.sex = sexField.getSelectedIndex() == 1;
-        v.cellphone = phoneField.getText().trim();
-        v.birthday = birthField.getText().trim();
+        v.sex = (sexField.getSelectedIndex() == 1) ? "男" : "女";
+        v.id = idField.getText().trim();
+        v.addr = addrField.getText().trim();
+        v.phone_number = phone_numberFiled.getText().trim();
 
         return v;
     }
