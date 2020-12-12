@@ -104,7 +104,7 @@ public class MyFrame extends JFrame
             EditVillagerDialog villagerDialog = new EditVillagerDialog(this);
 
             // 如果用户点击了取消或者关闭了窗口，则直接返回
-            if (villagerDialog.exec() == false)
+            if (!villagerDialog.exec())
                 return;
 
             else
@@ -112,7 +112,7 @@ public class MyFrame extends JFrame
                 Villager v = villagerDialog.getValue();
 
                 // 录入数据
-                if (addOneData(v) == true)
+                if (addOneData(v))
                 {
                     UpdateVillagerData();
                     JOptionPane.showMessageDialog(null,
@@ -154,10 +154,10 @@ public class MyFrame extends JFrame
                 stmt = conn.createStatement();
 
                 int[] count = table.getSelectedRows(); // 获取你选中的行号（记录）
-                for (int i = 0; i < count.length; i++)
+                for (int j : count)
                 {
                     // 读取身份证号字段的值
-                    String id = table.getValueAt(count[i], 3).toString();
+                    String id = table.getValueAt(j, 3).toString();
                     System.out.println(id);
 
                     String sql = "delete from yc_villagers where id = \"" + id + "\";";
@@ -318,15 +318,23 @@ public class MyFrame extends JFrame
     JPanel panel3()
     {
         // Content Pane
-        JPanel root = new JPanel();
+        JPanel panel3 = new JPanel();
 //        this.setContentPane(root); // 设置为默认背景
-        root.setLayout(new BorderLayout());
+        panel3.setLayout(new BorderLayout());
+
+//        JComboBox<String> jComboBox = new JComboBox();
+//        jComboBox.addItem("身份证");
+//        jComboBox.addItem("驾驶证");
+//        jComboBox.addItem("军官证");
+//        panel3.add(jComboBox);
+
 
         // 添加到主界面
         JScrollPane scrollPane = new JScrollPane(table);
-        table.setFillsViewportHeight(true);
-        table.setRowSelectionAllowed(true); // 整行选择
-        root.add(scrollPane, BorderLayout.CENTER);
+        table.setFillsViewportHeight(true); // 把高度剩下的部分用白色填满
+        table.setRowSelectionAllowed(true); // 整行选择(这一条的作用不明)
+        panel3.add(scrollPane, BorderLayout.CENTER);
+//        panel3.add(scrollPane);
 
         // 初始化设置：添加5列
         tableModel.addColumn("村庄");
@@ -349,7 +357,7 @@ public class MyFrame extends JFrame
             }
         });
 
-        return root;
+        return panel3;
     }
 
     void showContextMenu(MouseEvent e)
@@ -369,7 +377,7 @@ public class MyFrame extends JFrame
             EditVillagerDialog villagerDialog = new EditVillagerDialog(this);
 
             // 如果用户点击了取消或者关闭了窗口，则直接返回
-            if (villagerDialog.exec() == false)
+            if (!villagerDialog.exec())
                 return;
 
             else
@@ -377,7 +385,7 @@ public class MyFrame extends JFrame
                 Villager v = villagerDialog.getValue();
 
                 // 录入数据
-                if (addOneData(v) == true)
+                if (addOneData(v))
                 {
                     UpdateVillagerData();
                     JOptionPane.showMessageDialog(null,
@@ -544,10 +552,10 @@ public class MyFrame extends JFrame
                 stmt = conn.createStatement();
 
                 int[] count = table.getSelectedRows(); // 获取你选中的行号（记录）
-                for (int i = 0; i < count.length; i++)
+                for (int j : count)
                 {
                     // 读取身份证号字段的值
-                    String id = table.getValueAt(count[i], 3).toString();
+                    String id = table.getValueAt(j, 3).toString();
                     System.out.println(id);
 
                     String sql = "delete from yc_villagers where id = \"" + id + "\";";
