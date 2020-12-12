@@ -18,8 +18,8 @@ public class MyFrame extends JFrame
     static final String DB_URL = "jdbc:mysql://localhost:3306/yc_data";
 
     // 数据库的用户名与密码
-    static final String USER = "root";
-    static final String PASS = "123456";
+    static final String SQL_USER = "root";
+    static final String SQL_PASS = "123456";
 
     // 主布局，卡片
     JPanel cards = new JPanel();
@@ -40,7 +40,7 @@ public class MyFrame extends JFrame
             Class.forName(JDBC_DRIVER);
 
             // 打开链接
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            conn = DriverManager.getConnection(DB_URL, SQL_USER, SQL_PASS);
 
             // 执行查询
             stmt = conn.createStatement();
@@ -143,7 +143,7 @@ public class MyFrame extends JFrame
         // 测试按钮
         test2.addActionListener(e ->
         {
-            
+
         });
 
         // 添加数据
@@ -198,7 +198,7 @@ public class MyFrame extends JFrame
             try
             {
                 Class.forName(JDBC_DRIVER);
-                conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                conn = DriverManager.getConnection(DB_URL, SQL_USER, SQL_PASS);
                 stmt = conn.createStatement();
 
                 int[] count = table.getSelectedRows(); // 获取你选中的行号（记录）
@@ -293,7 +293,7 @@ public class MyFrame extends JFrame
         try
         {
             Class.forName(JDBC_DRIVER);
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            conn = DriverManager.getConnection(DB_URL, SQL_USER, SQL_PASS);
             stmt = conn.createStatement();
 
 
@@ -496,7 +496,7 @@ public class MyFrame extends JFrame
                         try
                         {
                             Class.forName(JDBC_DRIVER);
-                            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                            conn = DriverManager.getConnection(DB_URL, SQL_USER, SQL_PASS);
                             stmt = conn.createStatement();
 
                             // 这里进行操作
@@ -588,7 +588,7 @@ public class MyFrame extends JFrame
             try
             {
                 Class.forName(JDBC_DRIVER);
-                conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                conn = DriverManager.getConnection(DB_URL, SQL_USER, SQL_PASS);
                 stmt = conn.createStatement();
 
                 int[] count = table.getSelectedRows(); // 获取你选中的行号（记录）
@@ -659,7 +659,7 @@ public class MyFrame extends JFrame
 
             // 打开链接
 //            System.out.println("连接数据库...");
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            conn = DriverManager.getConnection(DB_URL, SQL_USER, SQL_PASS);
 
             // 执行查询
 //            System.out.println(" 实例化Statement对象...");
@@ -761,7 +761,7 @@ public class MyFrame extends JFrame
 
             // 打开链接
 //            System.out.println("连接数据库...");
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            conn = DriverManager.getConnection(DB_URL, SQL_USER, SQL_PASS);
 
             // 执行查询
 //            System.out.println(" 实例化Statement对象...");
