@@ -81,9 +81,22 @@ public class MyFrame extends JFrame
 //        System.out.println("Goodbye!");
     }
 
+    void init()
+    {
+//        EditStudentDialog a = new EditStudentDialog(this);
+//        a.setVisible(true);
+//        Student s = a.getValue();
+
+        // 设置表格为不可编辑
+//        table.setEnabled(false);
+    }
+
     public MyFrame(String title)
     {
         super("8003119075 钟雨初");
+
+        // 初始化
+        init();
 
         JMenuBar menubar = new JMenuBar();
         this.setJMenuBar(menubar);
@@ -107,11 +120,95 @@ public class MyFrame extends JFrame
         menubar.add(operateMenu);
         JMenuItem refreshVillageInfo = new JMenuItem("刷新");
         JMenuItem deleteSelectedItem = new JMenuItem("删除数据");
+        JMenuItem addItem = new JMenuItem("增加数据");
         JMenuItem test2 = new JMenuItem("测试（暂未使用）");
 
         operateMenu.add(refreshVillageInfo);
         operateMenu.add(test2);
         operateMenu.add(deleteSelectedItem);
+        operateMenu.add(addItem);
+
+        // 测试按钮
+        test2.addActionListener(e ->
+        {
+            EditVillagerDialog ttt = new EditVillagerDialog(this);
+            if (ttt.exec() == true)
+                System.out.println("true");
+            else
+                System.out.println("false");
+
+            Student ret = ttt.getValue();
+            System.out.println(ret);
+
+        });
+
+        // 添加数据
+        addItem.addActionListener(e ->
+        {
+            Connection conn = null;
+            Statement stmt = null;
+            // 准备语句
+            PreparedStatement ps = null;
+
+            try
+            {
+                Class.forName(JDBC_DRIVER);
+                conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                stmt = conn.createStatement();
+
+
+                // 写sql语句
+                String sql = "insert into yc_villagers (village, name, sex, id, addr, phone_number) values(?, ?, ?, ?, ?, ?)";
+                ps = conn.prepareStatement(sql);
+                ps.setString(1, "村庄3");
+                ps.setString(2, "村庄3");
+                ps.setString(3, "村庄3");
+                ps.setString(4, "村庄3");
+                ps.setString(5, "村庄3");
+                ps.setString(6, "村庄3");
+
+                // 执行update操作
+                int resultSet = ps.executeUpdate();
+                System.out.printf("resultset = %d\n", resultSet);
+                if (resultSet > 0)
+                    System.out.println("success");
+                else
+                    System.out.println("failure");
+
+                stmt.close();
+                conn.close();
+            } catch (SQLException se)
+            {
+                // 处理 JDBC 错误
+                JOptionPane.showMessageDialog(null,
+                        "插入数据错误！两个人的身份证号不能一致，请检查您的输入！",
+                        "出错啦", JOptionPane.INFORMATION_MESSAGE);
+                se.printStackTrace();
+            } catch (Exception eee)
+            {
+                // 处理 Class.forName 错误
+                eee.printStackTrace();
+            } finally
+            {
+                // 关闭资源
+                try
+                {
+                    if (stmt != null) stmt.close();
+                } catch (SQLException se2)
+                {
+                }// 什么都不做
+                try
+                {
+                    if (conn != null) conn.close();
+                } catch (SQLException se)
+                {
+                    se.printStackTrace();
+                }
+            }
+
+            // 插入数据之后更新表格
+            UpdateVillagerData();
+        });
 
         // 删除数据
         deleteSelectedItem.addActionListener(e ->

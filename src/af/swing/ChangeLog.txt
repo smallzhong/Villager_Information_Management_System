@@ -1,0 +1,5 @@
+
+2019-01-27 : 更新 af.swing.image.AfImageView，支持透明PNG的图标显示
+2019-01-27 : 添加 af.swing.layout.AfSimpleLayout
+2019-01-25 : 修改 AfImageView, 绘制PNG时，透明部分的颜色使用bgColor绘制
+2019-01-23 : 修改 AfColumnLayout里的小错误，width改成height
