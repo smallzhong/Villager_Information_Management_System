@@ -481,6 +481,7 @@ public class MyFrame extends JFrame
                             PreparedStatement ps =
                                     conn.prepareStatement("UPDATE yc_villagers " +
                                             "SET village=?, name=?, sex=?, id=?, addr=?, phone_number=? WHERE id=?");
+
                             // 注意索引从1开始
                             ps.setString(1, v2.village);
                             ps.setString(2, v2.name);
@@ -492,18 +493,6 @@ public class MyFrame extends JFrame
 
                             int n = ps.executeUpdate(); // 返回更新的行数
                             System.out.printf("更新了%d行\n", n);
-//                            int[] count = table.getSelectedRows(); // 获取你选中的行号（记录）
-//
-//                            for (int i = 0; i < count.length; i++)
-//                            {
-//                                // 读取身份证号字段的值
-//                                String id = table.getValueAt(count[i], 3).toString();
-//                                System.out.println(id);
-//
-//                                String sql = "delete from yc_villagers where id = \"" + id + "\";";
-//                                System.out.printf("%s 被执行\n", sql);
-//                                stmt.execute(sql);
-//                            }
 
                             stmt.close();
                             conn.close();
@@ -533,6 +522,7 @@ public class MyFrame extends JFrame
                             }
                         }
 
+                        // 最后更新下显示的数据
                         UpdateVillagerData();
                     }
                 }
