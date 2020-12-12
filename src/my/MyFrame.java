@@ -6,6 +6,7 @@ import java.sql.*;
 
 import java.awt.*;
 import java.util.Vector;
+import java.util.concurrent.Flow;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -320,21 +321,26 @@ public class MyFrame extends JFrame
         // Content Pane
         JPanel panel3 = new JPanel();
 //        this.setContentPane(root); // 设置为默认背景
-        panel3.setLayout(new BorderLayout());
+//        panel3.setLayout(new BorderLayout());
+        panel3.setLayout(new FlowLayout());
 
-//        JComboBox<String> jComboBox = new JComboBox();
-//        jComboBox.addItem("身份证");
-//        jComboBox.addItem("驾驶证");
-//        jComboBox.addItem("军官证");
-//        panel3.add(jComboBox);
+        JComboBox<String> jComboBox = new JComboBox();
+        Vector<String> villages = getVillages();
+
+        for (String s : villages)
+        {
+            jComboBox.addItem(s);
+        }
+
+        panel3.add(jComboBox);
 
 
         // 添加到主界面
         JScrollPane scrollPane = new JScrollPane(table);
         table.setFillsViewportHeight(true); // 把高度剩下的部分用白色填满
         table.setRowSelectionAllowed(true); // 整行选择(这一条的作用不明)
-        panel3.add(scrollPane, BorderLayout.CENTER);
-//        panel3.add(scrollPane);
+//        panel3.add(scrollPane, BorderLayout.CENTER);
+        panel3.add(scrollPane);
 
         // 初始化设置：添加5列
         tableModel.addColumn("村庄");
@@ -358,6 +364,73 @@ public class MyFrame extends JFrame
         });
 
         return panel3;
+    }
+
+    private Vector<String> getVillages()
+    {
+        Vector<String> v = new Vector<String>();
+
+        // 连接数据库，获取所有的村庄名字
+        Connection conn = null;
+        Statement stmt = null;
+        try
+        {
+            // 注册 JDBC 驱动
+            Class.forName(JDBC_DRIVER);
+
+            // 打开链接
+//            System.out.println("连接数据库...");
+            conn = DriverManager.getConnection(DB_URL, SQL_USER, SQL_PASS);
+
+            // 执行查询
+//            System.out.println(" 实例化Statement对象...");
+            stmt = conn.createStatement();
+            String sql;
+            sql = "SELECT DISTINCT village FROM yc_villagers";
+            ResultSet rs = stmt.executeQuery(sql);
+
+            // 展开结果集数据库
+            while (rs.next())
+            {
+                // 通过字段检索
+                String village = rs.getString("village");
+
+                v.add(village);
+
+                System.out.println(village);
+            }
+
+            // 完成后关闭
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException se)
+        {
+            // 处理 JDBC 错误
+            se.printStackTrace();
+        } catch (Exception e)
+        {
+            // 处理 Class.forName 错误
+            e.printStackTrace();
+        } finally
+        {
+            // 关闭资源
+            try
+            {
+                if (stmt != null) stmt.close();
+            } catch (SQLException se2)
+            {
+            }// 什么都不做
+            try
+            {
+                if (conn != null) conn.close();
+            } catch (SQLException se)
+            {
+                se.printStackTrace();
+            }
+        }
+
+        return v;
     }
 
     void showContextMenu(MouseEvent e)
