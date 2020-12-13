@@ -920,9 +920,47 @@ public class MyFrame extends JFrame
         // 创建第一个面板
         JPanel p1 = new JPanel();
 
+        p1.setLayout(new FlowLayout());
+        JScrollPane scrollPane = new JScrollPane(Distancetable);
+        Distancetable.setFillsViewportHeight(true); // 把高度剩下的部分用白色填满
+        Distancetable.setRowSelectionAllowed(true); // 整行选择(这一条的作用不明)
+        p1.add(scrollPane);
 
+        DistancetableModel.addColumn("村庄A");
+        DistancetableModel.addColumn("村庄B");
+        DistancetableModel.addColumn("距离");
+
+        setDistanceInfo();
+
+        // 添加Distance表格的右键相应事件
+        Distancetable.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                if (e.getButton() == MouseEvent.BUTTON3)
+                {
+                    System.out.println("panel1中右键被点击了");
+                }
+            }
+        });
+
+        UpdateDistanceData();
 
         return p1;
+    }
+
+    private boolean UpdateDistanceData()
+    {
+        return true;
+    }
+
+    // TODO：设置距离信息
+    private boolean setDistanceInfo()
+    {
+
+
+        return true;
     }
 
 
