@@ -958,6 +958,7 @@ public class MyFrame extends JFrame
     // TODO：设置距离信息
     private boolean setDistanceInfo()
     {
+        Connection conn = null;
         Statement stmt = null;
         try
         {
