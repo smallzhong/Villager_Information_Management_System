@@ -44,12 +44,12 @@ public class MyFrame extends JFrame
     void init()
     {
         // 添加条目选中状态改变的监听器
-        VillageCombobox.addItemListener(new ItemListener()
+        VillageCombobox.addItemListener(e ->
         {
-            @Override
-            public void itemStateChanged(ItemEvent e)
+            if (e.getStateChange() == ItemEvent.SELECTED)
             {
-                if (e.getStateChange() == ItemEvent.SELECTED)
+                // 只有当有改动的时候才更新
+                if (VillageCombobox.getSelectedIndex() != VillageSelected)
                 {
                     System.out.println("SELECTED");
                     MyFrame.this.UpdateVillagerDataEx(VillageCombobox.getSelectedIndex());
