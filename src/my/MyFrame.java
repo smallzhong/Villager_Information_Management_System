@@ -27,10 +27,10 @@ public class MyFrame extends JFrame
     private final JPanel cards = new JPanel();
 
     // 表格数据
-    private final DefaultTableModel tableModel = new DefaultTableModel();
+    private final DefaultTableModel VillagertableModel = new DefaultTableModel();
 
     // 显示表格
-    private final JTable table = new JTable(tableModel);
+    private final JTable Villagerrtable = new JTable(VillagertableModel);
 
     // 村庄信息
     private final JComboBox<String> VillageCombobox = new JComboBox();
@@ -149,7 +149,7 @@ public class MyFrame extends JFrame
         // 删除数据
         deleteSelectedItem.addActionListener(e ->
         {
-            if (table.getSelectedRows().length == 0)
+            if (Villagerrtable.getSelectedRows().length == 0)
             {
                 JOptionPane.showMessageDialog(null,
                         "您并未选中任何一行数据！", "错误", JOptionPane.INFORMATION_MESSAGE);
@@ -170,11 +170,11 @@ public class MyFrame extends JFrame
                 conn = DriverManager.getConnection(DB_URL, SQL_USER, SQL_PASS);
                 stmt = conn.createStatement();
 
-                int[] count = table.getSelectedRows(); // 获取你选中的行号（记录）
+                int[] count = Villagerrtable.getSelectedRows(); // 获取你选中的行号（记录）
                 for (int j : count)
                 {
                     // 读取身份证号字段的值
-                    String id = table.getValueAt(j, 3).toString();
+                    String id = Villagerrtable.getValueAt(j, 3).toString();
                     System.out.println(id);
 
                     String sql = "delete from yc_villagers where id = \"" + id + "\";";
@@ -374,24 +374,24 @@ public class MyFrame extends JFrame
         panel3.add(VillageCombobox);
 
         // 添加到主界面
-        JScrollPane scrollPane = new JScrollPane(table);
-        table.setFillsViewportHeight(true); // 把高度剩下的部分用白色填满
-        table.setRowSelectionAllowed(true); // 整行选择(这一条的作用不明)
+        JScrollPane scrollPane = new JScrollPane(Villagerrtable);
+        Villagerrtable.setFillsViewportHeight(true); // 把高度剩下的部分用白色填满
+        Villagerrtable.setRowSelectionAllowed(true); // 整行选择(这一条的作用不明)
 //        panel3.add(scrollPane, BorderLayout.CENTER);
         panel3.add(scrollPane);
 
         // 初始化设置：添加5列
-        tableModel.addColumn("村庄");
-        tableModel.addColumn("姓名");
-        tableModel.addColumn("性别");
-        tableModel.addColumn("身份证号");
-        tableModel.addColumn("地址");
-        tableModel.addColumn("电话号码");
+        VillagertableModel.addColumn("村庄");
+        VillagertableModel.addColumn("姓名");
+        VillagertableModel.addColumn("性别");
+        VillagertableModel.addColumn("身份证号");
+        VillagertableModel.addColumn("地址");
+        VillagertableModel.addColumn("电话号码");
 
         setVillagerTableInfo();
 
         // 添加表格的右键响应事件
-        table.addMouseListener(new MouseAdapter()
+        Villagerrtable.addMouseListener(new MouseAdapter()
         {
             @Override
             public void mouseClicked(MouseEvent e)
@@ -545,14 +545,14 @@ public class MyFrame extends JFrame
 
         updateMenuCmd.addActionListener(ee ->
         {
-            if (table.getSelectedRows().length == 0)
+            if (Villagerrtable.getSelectedRows().length == 0)
             {
                 JOptionPane.showMessageDialog(null,
                         "您并未选中任何一行数据！", "错误", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
 
-            int[] count = table.getSelectedRows(); // 获取你选中的行号（记录）
+            int[] count = Villagerrtable.getSelectedRows(); // 获取你选中的行号（记录）
             if (count.length != 1)
             {
                 JOptionPane.showMessageDialog(null,
@@ -565,12 +565,12 @@ public class MyFrame extends JFrame
 
 
             Villager v = new Villager();
-            v.village = (String) table.getValueAt(idx, 0);
-            v.name = (String) table.getValueAt(idx, 1);
-            v.sex = (String) table.getValueAt(idx, 2);
-            v.id = (String) table.getValueAt(idx, 3);
-            v.addr = (String) table.getValueAt(idx, 4);
-            v.phone_number = (String) table.getValueAt(idx, 5);
+            v.village = (String) Villagerrtable.getValueAt(idx, 0);
+            v.name = (String) Villagerrtable.getValueAt(idx, 1);
+            v.sex = (String) Villagerrtable.getValueAt(idx, 2);
+            v.id = (String) Villagerrtable.getValueAt(idx, 3);
+            v.addr = (String) Villagerrtable.getValueAt(idx, 4);
+            v.phone_number = (String) Villagerrtable.getValueAt(idx, 5);
 
             // 设置弹出的对话框中的值为默认值
             villagerDialog.setValue(v);
@@ -673,7 +673,7 @@ public class MyFrame extends JFrame
 
         detailMenuCmd.addActionListener(ee ->
         {
-            if (table.getSelectedRows().length == 0)
+            if (Villagerrtable.getSelectedRows().length == 0)
             {
                 JOptionPane.showMessageDialog(null,
                         "您并未选中任何一行数据！", "错误", JOptionPane.INFORMATION_MESSAGE);
@@ -694,11 +694,11 @@ public class MyFrame extends JFrame
                 conn = DriverManager.getConnection(DB_URL, SQL_USER, SQL_PASS);
                 stmt = conn.createStatement();
 
-                int[] count = table.getSelectedRows(); // 获取你选中的行号（记录）
+                int[] count = Villagerrtable.getSelectedRows(); // 获取你选中的行号（记录）
                 for (int j : count)
                 {
                     // 读取身份证号字段的值
-                    String id = table.getValueAt(j, 3).toString();
+                    String id = Villagerrtable.getValueAt(j, 3).toString();
                     System.out.println(id);
 
                     String sql = "delete from yc_villagers where id = \"" + id + "\";";
@@ -790,7 +790,7 @@ public class MyFrame extends JFrame
                 rowData.add(id);
                 rowData.add(addr);
                 rowData.add(phone_number);
-                tableModel.addRow(rowData);
+                VillagertableModel.addRow(rowData);
             }
 
             // 完成后关闭
@@ -828,7 +828,7 @@ public class MyFrame extends JFrame
     private void onDelete()
     {
         // 获取选中的行的索引
-        int[] rows = table.getSelectedRows();
+        int[] rows = Villagerrtable.getSelectedRows();
         if (rows.length == 0) return;
 
         // 弹出对话框确认
@@ -841,7 +841,7 @@ public class MyFrame extends JFrame
         // 技巧：从后往前删除
         for (int i = rows.length - 1; i >= 0; i--)
         {
-            tableModel.removeRow(rows[i]);
+            VillagertableModel.removeRow(rows[i]);
         }
     }
 
@@ -849,11 +849,11 @@ public class MyFrame extends JFrame
     void UpdateVillagerData()
     {
         // 先把表格中全部的数据删除，避免重复数据出现
-        int rows_ct = table.getRowCount();
+        int rows_ct = Villagerrtable.getRowCount();
         // 从后往前删除，防止下标变化导致删除失败
         for (int i = rows_ct - 1; i >= 0; i--)
         {
-            tableModel.removeRow(i);
+            VillagertableModel.removeRow(i);
         }
 
         Connection conn = null;
@@ -902,7 +902,7 @@ public class MyFrame extends JFrame
                 rowData.add(id);
                 rowData.add(addr);
                 rowData.add(phone_number);
-                tableModel.addRow(rowData);
+                VillagertableModel.addRow(rowData);
             }
 
             // 完成后关闭
@@ -936,7 +936,7 @@ public class MyFrame extends JFrame
         }
 
         // 更新完表格中信息后更新Combobox中的信息
-        if (UpdateComboboxFlag == true)
+        if (UpdateComboboxFlag)
             UpdateVillageCombobox();
         else
         {
@@ -953,7 +953,7 @@ public class MyFrame extends JFrame
         rowData.add(item.id);
         rowData.add(item.addr);
         rowData.add(item.phone_number);
-        tableModel.addRow(rowData);
+        VillagertableModel.addRow(rowData);
     }
 
 
