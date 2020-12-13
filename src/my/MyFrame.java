@@ -91,7 +91,7 @@ public class MyFrame extends JFrame
         // 菜单 文件
         JMenu fileMenu = new JMenu("视图");
         menubar.add(fileMenu);
-        JMenuItem fileOpenCmd = new JMenuItem("视图1");
+        JMenuItem fileOpenCmd = new JMenuItem("村庄距离信息");
         JMenuItem fileSaveCmd = new JMenuItem("视图2");
         JMenuItem fileSaveAsCmd = new JMenuItem("村民信息");
         fileMenu.add(fileOpenCmd);
@@ -958,7 +958,68 @@ public class MyFrame extends JFrame
     // TODO：设置距离信息
     private boolean setDistanceInfo()
     {
+        Statement stmt = null;
+        try
+        {
+            // 注册 JDBC 驱动
+            Class.forName(JDBC_DRIVER);
 
+            // 打开链接
+            conn = DriverManager.getConnection(DB_URL, SQL_USER, SQL_PASS);
+
+            // 执行查询
+            stmt = conn.createStatement();
+            String sql;
+            sql = "SELECT * FROM village_distances";
+            ResultSet rs = stmt.executeQuery(sql);
+
+            // 展开结果集数据库
+            while (rs.next())
+            {
+                // 通过字段检索
+                String village1 = rs.getString("src");
+                String village2 = rs.getString("dest");
+                // 把double转为String
+                String distance = "" + rs.getDouble("distance_kilo");
+
+
+                // 添加到table中去
+                Vector<Object> rowData = new Vector<>();
+                rowData.add(village1);
+                rowData.add(village2);
+                rowData.add(distance);
+                DistancetableModel.addRow(rowData);
+            }
+
+            // 完成后关闭
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException se)
+        {
+            // 处理 JDBC 错误
+            se.printStackTrace();
+        } catch (Exception e)
+        {
+            // 处理 Class.forName 错误
+            e.printStackTrace();
+        } finally
+        {
+            // 关闭资源
+            try
+            {
+                if (stmt != null) stmt.close();
+            } catch (SQLException se2)
+            {
+            }// 什么都不做
+            try
+            {
+                if (conn != null) conn.close();
+            } catch (SQLException se)
+            {
+                se.printStackTrace();
+            }
+        }
 
         return true;
     }
