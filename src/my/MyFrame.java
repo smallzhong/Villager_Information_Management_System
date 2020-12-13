@@ -26,13 +26,19 @@ public class MyFrame extends JFrame
     // 主布局，卡片
     private final JPanel cards = new JPanel();
 
-    // 表格数据
+    // 村民信息表格数据
     private final DefaultTableModel VillagertableModel = new DefaultTableModel();
 
-    // 显示表格
+    // 村民信息显示表格
     private final JTable Villagerrtable = new JTable(VillagertableModel);
 
-    // 村庄信息
+    // 村庄距离表格数据
+    private final DefaultTableModel DistancetableModel = new DefaultTableModel();
+
+    // 村庄距离显示表格
+    private final JTable Distancetable = new JTable(DistancetableModel);
+
+    // 村庄信息Combobox
     private final JComboBox<String> VillageCombobox = new JComboBox();
 
     // VillageCombobox里面选择的元素的下标，刚开始的时候要跳过
@@ -251,8 +257,8 @@ public class MyFrame extends JFrame
         cards.add(p2, "text"); // 添加第二张卡片，名字叫 text
         cards.add(p3, "table");
 
-        switchCard(1);
-        switchCard(0);
+//        switchCard(1);
+//        switchCard(0);
         switchCard(2);
     }
 
@@ -864,11 +870,9 @@ public class MyFrame extends JFrame
             Class.forName(JDBC_DRIVER);
 
             // 打开链接
-//            System.out.println("连接数据库...");
             conn = DriverManager.getConnection(DB_URL, SQL_USER, SQL_PASS);
 
             // 执行查询
-//            System.out.println(" 实例化Statement对象...");
             stmt = conn.createStatement();
             String sql;
 
@@ -961,9 +965,8 @@ public class MyFrame extends JFrame
     {
         // 创建第一个面板
         JPanel p1 = new JPanel();
-        p1.add(new JButton("红"));
-        p1.add(new JButton("绿"));
-        p1.add(new JButton("蓝"));
+
+
 
         return p1;
     }
