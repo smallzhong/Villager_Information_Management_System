@@ -35,19 +35,25 @@ public class MyFrame extends JFrame
     // 村庄信息
     private final JComboBox<String> VillageCombobox = new JComboBox();
 
-    // 添加条目选中状态改变的监听器
+    // VillageCombobox里面选择的元素的下标，刚开始的时候要跳过
+    private int VillageSelected = -1;
 
-    // VillageCombobox里面选择的元素的下标
-    private final int VillageSelected = 0;
+    // 指示是否需要更新Combobox中的元素的Flag
+    boolean UpdateComboboxFlag = true;
 
     void init()
     {
-        VillageCombobox.addItemListener(e ->
+        // 添加条目选中状态改变的监听器
+        VillageCombobox.addItemListener(new ItemListener()
         {
-            if (e.getStateChange() == ItemEvent.SELECTED)
+            @Override
+            public void itemStateChanged(ItemEvent e)
             {
-                System.out.println("选中: " +
-                        VillageCombobox.getSelectedIndex() + " = " + VillageCombobox.getSelectedItem());
+                if (e.getStateChange() == ItemEvent.SELECTED)
+                {
+                    System.out.println("SELECTED");
+                    MyFrame.this.UpdateVillagerDataEx(VillageCombobox.getSelectedIndex());
+                }
             }
         });
     }
@@ -245,6 +251,27 @@ public class MyFrame extends JFrame
         switchCard(2);
     }
 
+    // 防止多次调用UpdateVillagerData
+    private boolean UpdateVillagerDataEx(int idx)
+    {
+        // 如果和上次的idx一样，说明没改变，直接返回，防止重复调用
+        if (idx == VillageSelected) return false;
+        else
+        {
+            VillageSelected = idx;
+            // 如果选中的条目更改了则更新，先设置为false，防止更新combobox导致出错
+            UpdateComboboxFlag = false;
+            UpdateVillagerData();
+            assert UpdateComboboxFlag;
+            return true;
+        }
+    }
+
+    private boolean UpdateTableInfoWithSelectedItem()
+    {
+        return true;
+    }
+
     // 往村民数据库中增加一条数据
     private boolean addOneData(Villager v)
     {
@@ -364,6 +391,8 @@ public class MyFrame extends JFrame
                     showContextMenu(e);
             }
         });
+
+        UpdateVillagerData();
 
         return panel3;
     }
@@ -806,6 +835,7 @@ public class MyFrame extends JFrame
         }
     }
 
+    // 根据当前选中的条目来更新VillagerData
     void UpdateVillagerData()
     {
         // 先把表格中全部的数据删除，避免重复数据出现
@@ -831,7 +861,16 @@ public class MyFrame extends JFrame
 //            System.out.println(" 实例化Statement对象...");
             stmt = conn.createStatement();
             String sql;
-            sql = "SELECT * FROM yc_villagers";
+
+            // 如果选中的是全部村庄
+            if (VillageSelected == 0)
+                sql = "SELECT * FROM yc_villagers";
+                // 如果选中的是某个特定的村庄
+            else
+            {
+                sql = "SELECT * FROM yc_villagers where village=\"" + VillageCombobox.getSelectedItem() + "\"";
+                System.out.printf("sql语句：%s被执行了\n", sql);
+            }
             ResultSet rs = stmt.executeQuery(sql);
 
             // 展开结果集数据库
@@ -887,7 +926,12 @@ public class MyFrame extends JFrame
         }
 
         // 更新完表格中信息后更新Combobox中的信息
-        UpdateVillageCombobox();
+        if (UpdateComboboxFlag == true)
+            UpdateVillageCombobox();
+        else
+        {
+            UpdateComboboxFlag = false;
+        }
     }
 
     void addTableRow(Villager item)
