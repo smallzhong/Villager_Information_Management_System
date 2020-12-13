@@ -216,7 +216,12 @@ public class MyFrame extends JFrame
         });
 
         // 更新村民数据（重新执行查询）
-        refreshVillageInfo.addActionListener(e -> UpdateVillagerData());
+        refreshVillageInfo.addActionListener(
+                e ->
+                {
+                    System.out.printf("刷新！idx = %d\n", VillageCombobox.getSelectedIndex());
+                    UpdateVillagerData();
+                });
 
         // 删除数据操作
 //        deleteData.addActionListener(e -> onDelete());
@@ -868,14 +873,14 @@ public class MyFrame extends JFrame
             String sql;
 
             // 如果选中的是全部村庄
-            if (VillageSelected == 0)
+            if (VillageCombobox.getSelectedIndex() == 0)
                 sql = "SELECT * FROM yc_villagers";
                 // 如果选中的是某个特定的村庄
             else
             {
                 sql = "SELECT * FROM yc_villagers where village=\"" + VillageCombobox.getSelectedItem() + "\"";
-                System.out.printf("sql语句：%s被执行了\n", sql);
             }
+            System.out.printf("sql语句：%s被执行了\n", sql);
             ResultSet rs = stmt.executeQuery(sql);
 
             // 展开结果集数据库
