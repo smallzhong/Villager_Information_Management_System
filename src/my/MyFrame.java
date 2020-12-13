@@ -1,12 +1,13 @@
 package my;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.*;
 
 import java.awt.*;
 import java.util.Vector;
-import java.util.concurrent.Flow;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -23,23 +24,32 @@ public class MyFrame extends JFrame
     static final String SQL_PASS = "123456";
 
     // 主布局，卡片
-    JPanel cards = new JPanel();
+    private final JPanel cards = new JPanel();
 
     // 表格数据
-    DefaultTableModel tableModel = new DefaultTableModel();
+    private final DefaultTableModel tableModel = new DefaultTableModel();
 
     // 显示表格
-    JTable table = new JTable(tableModel);
+    private final JTable table = new JTable(tableModel);
+
+    // 村庄信息
+    private final JComboBox<String> VillageCombobox = new JComboBox();
+
+    // 添加条目选中状态改变的监听器
+
+    // VillageCombobox里面选择的元素的下标
+    private final int VillageSelected = 0;
 
     void init()
     {
-
-//        EditStudentDialog a = new EditStudentDialog(this);
-//        a.setVisible(true);
-//        Student s = a.getValue();
-
-        // 设置表格为不可编辑
-//        table.setEnabled(false);
+        VillageCombobox.addItemListener(e ->
+        {
+            if (e.getStateChange() == ItemEvent.SELECTED)
+            {
+                System.out.println("选中: " +
+                        VillageCombobox.getSelectedIndex() + " = " + VillageCombobox.getSelectedItem());
+            }
+        });
     }
 
     // 测试函数
@@ -324,16 +334,8 @@ public class MyFrame extends JFrame
 //        panel3.setLayout(new BorderLayout());
         panel3.setLayout(new FlowLayout());
 
-        JComboBox<String> jComboBox = new JComboBox();
-        Vector<String> villages = getVillages();
-
-        for (String s : villages)
-        {
-            jComboBox.addItem(s);
-        }
-
-        panel3.add(jComboBox);
-
+        UpdateVillageCombobox();
+        panel3.add(VillageCombobox);
 
         // 添加到主界面
         JScrollPane scrollPane = new JScrollPane(table);
@@ -366,6 +368,35 @@ public class MyFrame extends JFrame
         return panel3;
     }
 
+    private boolean UpdateVillageCombobox()
+    {
+        // 先把原来里面的所有元素删除
+        if (true)
+        {
+            int ct = VillageCombobox.getItemCount();
+            System.out.printf("ct = %d\n", ct);
+            for (int i = ct - 1; i >= 0; i--)
+            {
+                System.out.printf("removing %d\n", i);
+                VillageCombobox.removeItemAt(i);
+            }
+        }
+
+        // 获取村庄名
+        Vector<String> villages = getVillages();
+
+        // 先把idx = 0的位置设置为所有村庄
+        VillageCombobox.addItem("所有村庄");
+
+        for (String s : villages)
+        {
+            VillageCombobox.addItem(s);
+        }
+
+        return true;
+    }
+
+    // 获取所有的村庄名（且DISTINCT）
     private Vector<String> getVillages()
     {
         Vector<String> v = new Vector<String>();
@@ -854,7 +885,9 @@ public class MyFrame extends JFrame
                 se.printStackTrace();
             }
         }
-//        System.out.println("Goodbye!");
+
+        // 更新完表格中信息后更新Combobox中的信息
+        UpdateVillageCombobox();
     }
 
     void addTableRow(Villager item)
