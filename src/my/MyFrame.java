@@ -262,7 +262,11 @@ public class MyFrame extends JFrame
             // 如果选中的条目更改了则更新，先设置为false，防止更新combobox导致出错
             UpdateComboboxFlag = false;
             UpdateVillagerData();
-            assert UpdateComboboxFlag;
+            if (UpdateComboboxFlag == false)
+            {
+                JOptionPane.showMessageDialog(null,
+                        "内部错误！UpdateComboboxFlag == false", "错误", JOptionPane.INFORMATION_MESSAGE);
+            }
             return true;
         }
     }
@@ -524,6 +528,7 @@ public class MyFrame extends JFrame
                     JOptionPane.showMessageDialog(null,
                             v.name + "的信息录入成功！",
                             "错误", JOptionPane.INFORMATION_MESSAGE);
+                    UpdateVillagerData();
                 }
                 else
                 {
@@ -930,7 +935,7 @@ public class MyFrame extends JFrame
             UpdateVillageCombobox();
         else
         {
-            UpdateComboboxFlag = false;
+            UpdateComboboxFlag = true;
         }
     }
 

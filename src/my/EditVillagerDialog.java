@@ -25,7 +25,7 @@ public class EditVillagerDialog extends JDialog
 
     public EditVillagerDialog(JFrame owner)
     {
-        super(owner, "编辑学生信息", true);
+        super(owner, "增加村民信息", true);
         this.setSize(300, 300);
 
         // 设置一个容器
