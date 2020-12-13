@@ -257,8 +257,6 @@ public class MyFrame extends JFrame
         cards.add(p2, "text"); // 添加第二张卡片，名字叫 text
         cards.add(p3, "table");
 
-//        switchCard(1);
-//        switchCard(0);
         switchCard(2);
     }
 
@@ -366,50 +364,6 @@ public class MyFrame extends JFrame
     private boolean addMultipleData()
     {
         return true;
-    }
-
-    JPanel panel3()
-    {
-        // Content Pane
-        JPanel panel3 = new JPanel();
-//        this.setContentPane(root); // 设置为默认背景
-//        panel3.setLayout(new BorderLayout());
-        panel3.setLayout(new FlowLayout());
-
-        UpdateVillageCombobox();
-        panel3.add(VillageCombobox);
-
-        // 添加到主界面
-        JScrollPane scrollPane = new JScrollPane(Villagerrtable);
-        Villagerrtable.setFillsViewportHeight(true); // 把高度剩下的部分用白色填满
-        Villagerrtable.setRowSelectionAllowed(true); // 整行选择(这一条的作用不明)
-//        panel3.add(scrollPane, BorderLayout.CENTER);
-        panel3.add(scrollPane);
-
-        // 初始化设置：添加5列
-        VillagertableModel.addColumn("村庄");
-        VillagertableModel.addColumn("姓名");
-        VillagertableModel.addColumn("性别");
-        VillagertableModel.addColumn("身份证号");
-        VillagertableModel.addColumn("地址");
-        VillagertableModel.addColumn("电话号码");
-
-        setVillagerTableInfo();
-
-        // 添加表格的右键响应事件
-        Villagerrtable.addMouseListener(new MouseAdapter()
-        {
-            @Override
-            public void mouseClicked(MouseEvent e)
-            {
-                if (e.getButton() == MouseEvent.BUTTON3)
-                    showContextMenu(e);
-            }
-        });
-
-        UpdateVillagerData();
-
-        return panel3;
     }
 
     private boolean UpdateVillageCombobox()
@@ -969,6 +923,51 @@ public class MyFrame extends JFrame
 
 
         return p1;
+    }
+
+
+    JPanel panel3()
+    {
+        // Content Pane
+        JPanel panel3 = new JPanel();
+//        this.setContentPane(root); // 设置为默认背景
+//        panel3.setLayout(new BorderLayout());
+        panel3.setLayout(new FlowLayout());
+
+        UpdateVillageCombobox();
+        panel3.add(VillageCombobox);
+
+        // 添加到主界面
+        JScrollPane scrollPane = new JScrollPane(Villagerrtable);
+        Villagerrtable.setFillsViewportHeight(true); // 把高度剩下的部分用白色填满
+        Villagerrtable.setRowSelectionAllowed(true); // 整行选择(这一条的作用不明)
+//        panel3.add(scrollPane, BorderLayout.CENTER);
+        panel3.add(scrollPane);
+
+        // 初始化设置：添加5列
+        VillagertableModel.addColumn("村庄");
+        VillagertableModel.addColumn("姓名");
+        VillagertableModel.addColumn("性别");
+        VillagertableModel.addColumn("身份证号");
+        VillagertableModel.addColumn("地址");
+        VillagertableModel.addColumn("电话号码");
+
+        setVillagerTableInfo();
+
+        // 添加表格的右键响应事件
+        Villagerrtable.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                if (e.getButton() == MouseEvent.BUTTON3)
+                    showContextMenu(e);
+            }
+        });
+
+        UpdateVillagerData();
+
+        return panel3;
     }
 
     JPanel panel2()
