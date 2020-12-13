@@ -105,7 +105,7 @@ public class MyFrame extends JFrame
         // 帮助菜单
         JMenu operateMenu = new JMenu("操作");
         menubar.add(operateMenu);
-        JMenuItem refreshVillageInfo = new JMenuItem("刷新");
+        JMenuItem refreshVillageInfo = new JMenuItem("刷新全部信息");
         JMenuItem deleteSelectedItem = new JMenuItem("删除数据");
         JMenuItem addItem = new JMenuItem("增加数据");
         JMenuItem test2 = new JMenuItem("测试（暂未使用）");
@@ -222,11 +222,15 @@ public class MyFrame extends JFrame
         });
 
         // 更新村民数据（重新执行查询）
+        // 同时更新距离信息和村庄信息
         refreshVillageInfo.addActionListener(
                 e ->
                 {
                     System.out.printf("刷新！idx = %d\n", VillageCombobox.getSelectedIndex());
+                    // 更新村民数据和村庄信息
                     UpdateVillagerData();
+                    // 更新距离信息
+                    UpdateDistanceData();
                 });
 
         // 删除数据操作
@@ -805,6 +809,91 @@ public class MyFrame extends JFrame
         }
     }
 
+    private void UpdateDistanceData()
+    {
+        // 先把表格中全部的数据删除，避免重复数据出现
+        int rows_ct = Distancetable.getRowCount();
+        // 从后往前删除，防止下标变化导致删除失败
+        for (int i = rows_ct - 1; i >= 0; i--)
+        {
+            DistancetableModel.removeRow(i);
+        }
+
+        // 连接数据库更新距离信息
+        Connection conn = null;
+        Statement stmt = null;
+        try
+        {
+            // 注册 JDBC 驱动
+            Class.forName(JDBC_DRIVER);
+
+            // 打开链接
+            conn = DriverManager.getConnection(DB_URL, SQL_USER, SQL_PASS);
+
+            // 执行查询
+            stmt = conn.createStatement();
+            String sql;
+
+            sql = "SELECT * FROM village_distances";
+            System.out.printf("sql语句：%s被执行了\n", sql);
+            ResultSet rs = stmt.executeQuery(sql);
+
+            // 展开结果集数据库
+            while (rs.next())
+            {
+                // 通过字段检索
+                String village1 = rs.getString("src");
+                String village2 = rs.getString("dest");
+                // 把double转为String
+                String distance = "" + rs.getDouble("distance_kilo") + "公里";
+
+                // 添加到table中去
+                Vector<Object> rowData = new Vector<>();
+                rowData.add(village1);
+                rowData.add(village2);
+                rowData.add(distance);
+                DistancetableModel.addRow(rowData);
+            }
+
+            // 完成后关闭
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException se)
+        {
+            // 处理 JDBC 错误
+            se.printStackTrace();
+        } catch (Exception e)
+        {
+            // 处理 Class.forName 错误
+            e.printStackTrace();
+        } finally
+        {
+            // 关闭资源
+            try
+            {
+                if (stmt != null) stmt.close();
+            } catch (SQLException se2)
+            {
+            }// 什么都不做
+            try
+            {
+                if (conn != null) conn.close();
+            } catch (SQLException se)
+            {
+                se.printStackTrace();
+            }
+        }
+
+        // 更新完表格中信息后更新Combobox中的信息
+        if (UpdateComboboxFlag)
+            UpdateVillageCombobox();
+        else
+        {
+            UpdateComboboxFlag = true;
+        }
+    }
+
     // 根据当前选中的条目来更新VillagerData
     void UpdateVillagerData()
     {
@@ -950,11 +1039,6 @@ public class MyFrame extends JFrame
         return p1;
     }
 
-    private boolean UpdateDistanceData()
-    {
-        return true;
-    }
-
     // TODO：设置距离信息
     private boolean setDistanceInfo()
     {
@@ -981,7 +1065,7 @@ public class MyFrame extends JFrame
                 String village1 = rs.getString("src");
                 String village2 = rs.getString("dest");
                 // 把double转为String
-                String distance = "" + rs.getDouble("distance_kilo");
+                String distance = "" + rs.getDouble("distance_kilo") + "公里";
 
 
                 // 添加到table中去
