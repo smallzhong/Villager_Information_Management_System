@@ -4,6 +4,7 @@ import java.awt.event.*;
 import java.sql.*;
 
 import java.awt.*;
+import java.util.Random;
 import java.util.Vector;
 
 import javax.swing.*;
@@ -124,6 +125,18 @@ public class MyFrame extends JFrame
 
             g.setColor(zyc_lilac);
 
+
+            setWalls(g);
+
+            drawGrid(g);
+
+
+        }
+
+        // 画出基本的网格，防止网格线被填充的颜色覆盖
+        private void drawGrid(Graphics g)
+        {
+            g.setColor(Color.BLUE); // 网格线设置为蓝色
             for (int i = 0; i < 31; i++)
             {
                 for (int j = 0; j < 31; j++)
@@ -131,35 +144,26 @@ public class MyFrame extends JFrame
                     g.drawRect(i * CSIZE, j * CSIZE, CSIZE, CSIZE);
                 }
             }
+        }
 
-            // 网格的边框大小
-//            int CSIZE = 20;
-//            boolean flag = false;
-//            for (int i = 0; i < 21; i ++ )
-//            {
-//                for (int j = 0; j < 21; j ++ )
-//                {
-//                    if (flag)
-//                    {
-//                        g.setColor(zyc_lilac);
-//                        flag = false;
-//                    }
-//                    else
-//                    {
-//                        g.setColor(Color.BLUE);
-//                        flag = true;
-//                    }
-//
-//                    g.fillRect(i * CSIZE, j * CSIZE, CSIZE, CSIZE);
-//                }
-//            }
-
-//
-//            g.setColor(Color.BLACK);
-//            g.fillRect(0, 0, width / 2, height);
-//            g.setColor(zyc_lilac);
-//            g.fillRect(width / 2, 0, width / 2 - 1, height);
-//
+        // TODO：设置墙壁障碍
+        private void setWalls(Graphics g)
+        {
+            g.setColor(zyc_lilac);
+            for (int i = 0; i < cell_ct; i++)
+            {
+                for (int j = 0; j < cell_ct; j++)
+                {
+                    int min = 0; // 定义随机数的最小值
+                    int max = 4; // 定义随机数的最大值(不可取到最大值)
+                    // 产生一个0~3的数
+                    int s = (int) min + (int) (Math.random() * (max - min));
+                    if (s == 0)
+                    {
+                        g.fillRect(i * CSIZE, j * CSIZE, CSIZE, CSIZE);
+                    }
+                }
+            }
         }
 
         @Override
