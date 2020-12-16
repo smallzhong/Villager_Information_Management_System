@@ -64,15 +64,7 @@ public class MyFrame extends JFrame
     // 测试函数
     void test()
     {
-        Villager v = new Villager();
-        v.village = "村庄3";
-        v.name = "村庄3";
-        v.sex = "村庄3";
-        v.id = "123123123123";
-        v.addr = "村庄3";
-        v.phone_number = "村庄3";
-
-        this.addOneVillagerData(v);
+        
     }
 
     public MyFrame(String title)
