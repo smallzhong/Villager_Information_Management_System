@@ -12,8 +12,11 @@ import javax.swing.table.DefaultTableModel;
 
 public class MyFrame extends JFrame
 {
-    private final int  MAP_HEIGHT = 500;
-    private final int MAP_WIDTH = 500;
+    private final int CSIZE = 20; // 网格中的边框大小
+    private final int cell_ct = 31; // 一排有多少个格子
+    private final int MAP_HEIGHT = CSIZE * cell_ct;
+    private final int MAP_WIDTH = CSIZE * cell_ct;
+
 
     // 是最喜欢的丁香紫啊
     private final Color zyc_lilac = new Color(0xc8a2c8);
@@ -92,7 +95,7 @@ public class MyFrame extends JFrame
 //        frame.getContentPane().setLayout(new FlowLayout()); // TODO:先设置为流式布局，之后完善
 
         Map m = new Map();
-        m.setBounds(123, 10, MAP_WIDTH, MAP_HEIGHT);
+        m.setBounds(123, 10, MAP_WIDTH + 1, MAP_HEIGHT + 1); // 要+1，防止边上的线不显示
 
 //        frame.add(m);
         frame.add(m);
@@ -116,10 +119,47 @@ public class MyFrame extends JFrame
             int height = this.getHeight();
             System.out.printf("width = %d, height = %d\n", width, height);
 
-            g.setColor(Color.BLACK);
-            g.fillRect(0, 0, width / 2, height);
+            g.setColor(Color.WHITE);
+            g.fillRect(0, 0, width, height);
+
             g.setColor(zyc_lilac);
-            g.fillRect(width / 2, 0, width / 2 - 1, height);
+
+            for (int i = 0; i < 31; i++)
+            {
+                for (int j = 0; j < 31; j++)
+                {
+                    g.drawRect(i * CSIZE, j * CSIZE, CSIZE, CSIZE);
+                }
+            }
+
+            // 网格的边框大小
+//            int CSIZE = 20;
+//            boolean flag = false;
+//            for (int i = 0; i < 21; i ++ )
+//            {
+//                for (int j = 0; j < 21; j ++ )
+//                {
+//                    if (flag)
+//                    {
+//                        g.setColor(zyc_lilac);
+//                        flag = false;
+//                    }
+//                    else
+//                    {
+//                        g.setColor(Color.BLUE);
+//                        flag = true;
+//                    }
+//
+//                    g.fillRect(i * CSIZE, j * CSIZE, CSIZE, CSIZE);
+//                }
+//            }
+
+//
+//            g.setColor(Color.BLACK);
+//            g.fillRect(0, 0, width / 2, height);
+//            g.setColor(zyc_lilac);
+//            g.fillRect(width / 2, 0, width / 2 - 1, height);
+//
         }
 
         @Override
