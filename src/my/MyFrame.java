@@ -155,12 +155,16 @@ public class MyFrame extends JFrame
                 for (int j = 0; j < cell_ct; j++)
                 {
                     int min = 0; // 定义随机数的最小值
-                    int max = 4; // 定义随机数的最大值(不可取到最大值)
+                    int max = 3; // 定义随机数的最大值(不可取到最大值)
                     // 产生一个0~3的数
                     int s = (int) min + (int) (Math.random() * (max - min));
                     if (s == 0)
                     {
                         g.fillRect(i * CSIZE, j * CSIZE, CSIZE, CSIZE);
+                    }
+                    else
+                    {
+
                     }
                 }
             }
