@@ -1079,7 +1079,7 @@ public class MyFrame extends JFrame
             stmt = conn.createStatement();
             String sql;
 
-            sql = "SELECT * FROM village_distances";
+            sql = "SELECT x, y, village FROM village_pos";
             System.out.printf("sql语句：%s被执行了\n", sql);
             ResultSet rs = stmt.executeQuery(sql);
 
@@ -1087,16 +1087,16 @@ public class MyFrame extends JFrame
             while (rs.next())
             {
                 // 通过字段检索
-                String village1 = rs.getString("src");
-                String village2 = rs.getString("dest");
+                String x = "" + rs.getInt("x");
+                String y = "" + rs.getInt("y");
                 // 把double转为String
-                String distance = "" + rs.getDouble("distance_kilo") + "公里";
+                String village_name = rs.getString("village");
 
                 // 添加到table中去
                 Vector<Object> rowData = new Vector<>();
-                rowData.add(village1);
-                rowData.add(village2);
-                rowData.add(distance);
+                rowData.add(x);
+                rowData.add(y);
+                rowData.add(village_name);
                 DistancetableModel.addRow(rowData);
             }
 
@@ -1335,17 +1335,18 @@ public class MyFrame extends JFrame
             // 执行查询
             stmt = conn.createStatement();
             String sql;
-            sql = "SELECT * FROM village_distances";
+            sql = "SELECT x, y, village FROM village_pos";
             ResultSet rs = stmt.executeQuery(sql);
 
             // 展开结果集数据库
             while (rs.next())
             {
                 // 通过字段检索
-                String village1 = rs.getString("src");
-                String village2 = rs.getString("dest");
+                String village1 = "" + rs.getInt("x");
+                String village2 = "" + rs.getInt("y");
+
                 // 把double转为String
-                String distance = "" + rs.getDouble("distance_kilo") + "公里";
+                String distance = rs.getString("village");
 
 
                 // 添加到table中去
