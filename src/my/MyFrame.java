@@ -12,6 +12,9 @@ import javax.swing.table.DefaultTableModel;
 
 public class MyFrame extends JFrame
 {
+    private final int  MAP_HEIGHT = 500;
+    private final int MAP_WIDTH = 500;
+
     // 是最喜欢的丁香紫啊
     private final Color zyc_lilac = new Color(0xc8a2c8);
 
@@ -89,10 +92,9 @@ public class MyFrame extends JFrame
 //        frame.getContentPane().setLayout(new FlowLayout()); // TODO:先设置为流式布局，之后完善
 
         Map m = new Map();
-        m.setBounds(123, 10, 100, 100);
+        m.setBounds(123, 10, MAP_WIDTH, MAP_HEIGHT);
 
 //        frame.add(m);
-        frame.add(new JLabel("dgdg"));
         frame.add(m);
     }
 
