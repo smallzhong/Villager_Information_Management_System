@@ -1,8 +1,6 @@
 package my;
 
-import java.awt.event.ItemEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.sql.*;
 
 import java.awt.*;
@@ -1320,6 +1318,70 @@ public class MyFrame extends JFrame
         else if (cardnum == 2)
         {
             cardLayout.show(cards, "table");
+        }
+    }
+
+    // TODO：完善Map画图
+    // 内部类，用来
+    class Map extends JPanel implements MouseListener, MouseMotionListener
+    {
+        public Map()
+        {
+            addMouseListener(this);
+            addMouseMotionListener(this);
+        }
+
+        @Override
+        public void paintComponent(Graphics g)
+        {
+            super.paintComponent(g);
+            int width = this.getWidth();
+            int height = this.getHeight();
+
+            g.setColor(Color.BLACK);
+            g.fillRect(0, 0, width / 2, height / 2);
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent e)
+        {
+
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e)
+        {
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e)
+        {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e)
+        {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e)
+        {
+
+        }
+
+        @Override
+        public void mouseDragged(MouseEvent e)
+        {
+
+        }
+
+        @Override
+        public void mouseMoved(MouseEvent e)
+        {
+
         }
     }
 }
