@@ -64,12 +64,28 @@ public class MyFrame extends JFrame
     // 测试函数
     void test()
     {
-        
+
+    }
+
+    // 展示最短路可视化对话框
+    private void showMapJframe()
+    {
+        JFrame frame = new JFrame();
+        frame = new JFrame();
+        frame.setVisible(true);
+        frame.setResizable(false);
+        frame.setSize(WIDTH, HEIGHT);
+        frame.setTitle("寻找最短路径---By 钟雨初");
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().setLayout(null);
     }
 
     public MyFrame(String title)
     {
         super("8003119075 钟雨初");
+
+        test();
 
         // 初始化
         init();
@@ -83,7 +99,7 @@ public class MyFrame extends JFrame
         JMenuItem fileOpenCmd = new JMenuItem("村庄距离信息");
         JMenuItem fileSaveCmd = new JMenuItem("视图2");
         JMenuItem fileSaveAsCmd = new JMenuItem("村民信息");
-        JMenuItem test2 = new JMenuItem("测试按钮（暂未使用）");
+        JMenuItem test2 = new JMenuItem("展示最短路可视化对话框");
         fileMenu.add(fileOpenCmd);
         fileMenu.add(fileSaveCmd);
         fileMenu.add(fileSaveAsCmd);
@@ -107,9 +123,9 @@ public class MyFrame extends JFrame
         operateMenu.add(addItem);
 
         // 测试按钮
-        test2.addActionListener(e->
+        test2.addActionListener(e ->
         {
-            System.out.println("视图菜单中的测试按钮被点击了");
+            showMapJframe();
         });
 
         addDistanceInfo.addActionListener(e ->
@@ -569,7 +585,7 @@ public class MyFrame extends JFrame
         menu.add(testRightClickButton);
 
         // 测试按钮
-        testRightClickButton.addActionListener(ee->
+        testRightClickButton.addActionListener(ee ->
         {
             System.out.println("测试按钮被点击了");
         });
