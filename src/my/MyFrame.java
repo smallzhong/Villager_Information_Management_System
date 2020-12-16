@@ -107,15 +107,15 @@ public class MyFrame extends JFrame
         JMenuItem refreshVillageInfo = new JMenuItem("刷新全部信息");
         JMenuItem deleteSelectedItem = new JMenuItem("删除数据");
         JMenuItem addItem = new JMenuItem("增加数据");
-        JMenuItem test2 = new JMenuItem("测试（暂未使用）");
+        JMenuItem addDistanceInfo = new JMenuItem("增加村庄距离信息");
 
         operateMenu.add(refreshVillageInfo);
-        operateMenu.add(test2);
+        operateMenu.add(addDistanceInfo);
         operateMenu.add(deleteSelectedItem);
         operateMenu.add(addItem);
 
         // 测试按钮
-        test2.addActionListener(e ->
+        addDistanceInfo.addActionListener(e ->
         {
             TestDialog test = new TestDialog(this);
 

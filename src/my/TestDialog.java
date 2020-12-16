@@ -14,7 +14,7 @@ public class TestDialog extends JDialog
 
     public TestDialog(JFrame owner)
     {
-        super(owner, "testDialog", true);
+        super(owner, "增加村庄距离信息", true);
         this.setSize(600, 100);
 
         add(new JLabel("村庄1"));
