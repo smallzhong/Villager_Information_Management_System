@@ -228,7 +228,7 @@ public class MyFrame extends JFrame
         // 菜单 文件
         JMenu fileMenu = new JMenu("视图");
         menubar.add(fileMenu);
-        JMenuItem fileOpenCmd = new JMenuItem("村庄距离信息");
+        JMenuItem fileOpenCmd = new JMenuItem("村庄位置信息");
         JMenuItem fileSaveCmd = new JMenuItem("视图2");
         JMenuItem fileSaveAsCmd = new JMenuItem("村民信息");
         JMenuItem test2 = new JMenuItem("展示最短路可视化对话框");
