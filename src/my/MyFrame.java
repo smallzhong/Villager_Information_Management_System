@@ -1,7 +1,6 @@
 package my;
 
 import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.*;
@@ -118,7 +117,17 @@ public class MyFrame extends JFrame
         // 测试按钮
         test2.addActionListener(e ->
         {
+            TestDialog test = new TestDialog(this);
 
+            Vector<String> v = test.getValue();
+
+            for (String i :  v)
+            {
+                System.out.println(i);
+            }
+
+//            EditDistanceDialog d = new EditDistanceDialog(this);
+//            d.exec();
         });
 
         // 添加数据
@@ -466,7 +475,7 @@ public class MyFrame extends JFrame
         return v;
     }
 
-    void showContextMenu(MouseEvent e)
+    private void showVillagerContextMenu(MouseEvent e)
     {
         // 弹出右键菜单
         JPopupMenu menu = new JPopupMenu();
@@ -1028,15 +1037,50 @@ public class MyFrame extends JFrame
             public void mouseClicked(MouseEvent e)
             {
                 if (e.getButton() == MouseEvent.BUTTON3)
-                {
-                    System.out.println("panel1中右键被点击了");
-                }
+                    showDistanceContextMenu(e);
             }
         });
 
         UpdateDistanceData();
 
         return p1;
+    }
+
+    private void showDistanceContextMenu(MouseEvent e)
+    {
+        JPopupMenu menu = new JPopupMenu();
+        JMenuItem deleteMenuCmd = new JMenuItem("删除选中项");
+        menu.add(deleteMenuCmd);
+
+        // TODO:这里要添上一个新的Dialog
+        deleteMenuCmd.addActionListener(ee ->
+        {
+            // 添加数据
+            EditVillagerDialog villagerDialog = new EditVillagerDialog(this);
+
+            // 如果用户点击了取消或者关闭了窗口，则直接返回
+            if (!villagerDialog.exec())
+                return;
+            else
+            {
+                Villager v = villagerDialog.getValue();
+
+                // 录入数据
+                if (addOneData(v))
+                {
+                    UpdateVillagerData();
+                    JOptionPane.showMessageDialog(null,
+                            v.name + "的信息录入成功！",
+                            "错误", JOptionPane.INFORMATION_MESSAGE);
+                    UpdateVillagerData();
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null,
+                            "录入数据出错！请检查数据有效性！", "错误", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        });
     }
 
     // TODO：设置距离信息
@@ -1145,7 +1189,7 @@ public class MyFrame extends JFrame
             public void mouseClicked(MouseEvent e)
             {
                 if (e.getButton() == MouseEvent.BUTTON3)
-                    showContextMenu(e);
+                    showVillagerContextMenu(e);
             }
         });
 
