@@ -93,9 +93,11 @@ public class MyFrame extends JFrame
         JMenuItem fileOpenCmd = new JMenuItem("村庄距离信息");
         JMenuItem fileSaveCmd = new JMenuItem("视图2");
         JMenuItem fileSaveAsCmd = new JMenuItem("村民信息");
+        JMenuItem test2 = new JMenuItem("测试按钮（暂未使用）");
         fileMenu.add(fileOpenCmd);
         fileMenu.add(fileSaveCmd);
         fileMenu.add(fileSaveAsCmd);
+        fileMenu.add(test2);
 
         JMenuItem fileExitCmd = new JMenuItem("退出");
         fileMenu.addSeparator();
@@ -115,6 +117,11 @@ public class MyFrame extends JFrame
         operateMenu.add(addItem);
 
         // 测试按钮
+        test2.addActionListener(e->
+        {
+            System.out.println("视图菜单中的测试按钮被点击了");
+        });
+
         addDistanceInfo.addActionListener(e ->
         {
             TestDialog test = new TestDialog(this);
@@ -562,12 +569,20 @@ public class MyFrame extends JFrame
     {
         // 弹出右键菜单
         JPopupMenu menu = new JPopupMenu();
-        JMenuItem detailMenuCmd = new JMenuItem("删除选中项");
+        JMenuItem deleteMenuCmd = new JMenuItem("删除选中项");
         JMenuItem updateMenuCmd = new JMenuItem("修改选中项");
         JMenuItem addMenuCmd = new JMenuItem("增加一项记录");
-        menu.add(detailMenuCmd);
+        JMenuItem testRightClickButton = new JMenuItem("测试（暂未使用）");
+        menu.add(deleteMenuCmd);
         menu.add(updateMenuCmd);
         menu.add(addMenuCmd);
+        menu.add(testRightClickButton);
+
+        // 测试按钮
+        testRightClickButton.addActionListener(ee->
+        {
+            System.out.println("测试按钮被点击了");
+        });
 
         addMenuCmd.addActionListener(ee ->
         {
@@ -727,7 +742,7 @@ public class MyFrame extends JFrame
         });
 
 
-        detailMenuCmd.addActionListener(ee ->
+        deleteMenuCmd.addActionListener(ee ->
         {
             if (Villagerrtable.getSelectedRows().length == 0)
             {
