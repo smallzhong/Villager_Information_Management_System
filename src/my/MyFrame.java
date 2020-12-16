@@ -74,7 +74,7 @@ public class MyFrame extends JFrame
         v.addr = "村庄3";
         v.phone_number = "村庄3";
 
-        this.addOneData(v);
+        this.addOneVillagerData(v);
     }
 
     public MyFrame(String title)
@@ -121,13 +121,11 @@ public class MyFrame extends JFrame
 
             Vector<String> v = test.getValue();
 
-            for (String i :  v)
-            {
-                System.out.println(i);
-            }
+            // 如果点了取消
+            if (!test.getRetValue()) return;
 
-//            EditDistanceDialog d = new EditDistanceDialog(this);
-//            d.exec();
+            // 调用addOneDistanceData来在距离表中插入一行数据
+            addOneDistanceData(v);
         });
 
         // 添加数据
@@ -144,7 +142,7 @@ public class MyFrame extends JFrame
                 Villager v = villagerDialog.getValue();
 
                 // 录入数据
-                if (addOneData(v))
+                if (addOneVillagerData(v))
                 {
                     UpdateVillagerData();
                     JOptionPane.showMessageDialog(null,
@@ -298,8 +296,94 @@ public class MyFrame extends JFrame
         return true;
     }
 
+    private boolean addOneDistanceData(Vector<String> v)
+    {
+        double distance = 0;
+        try
+        {
+            distance = Double.valueOf(v.get(2));
+        } catch (NumberFormatException e)
+        {
+            JOptionPane.showMessageDialog(null,
+                    "输入的距离数据不合法！请重新输入！", "错误", JOptionPane.INFORMATION_MESSAGE);
+
+            return false;
+        }
+
+        Connection conn = null;
+        Statement stmt = null;
+        // 准备语句
+        PreparedStatement ps = null;
+
+        try
+        {
+            Class.forName(JDBC_DRIVER);
+            conn = DriverManager.getConnection(DB_URL, SQL_USER, SQL_PASS);
+            stmt = conn.createStatement();
+
+
+            // 写sql语句
+            String sql = "insert into village_distances" +
+                    " (src, dest, distance_kilo) values(?, ?, ?)";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, v.get(0));
+            ps.setString(2, v.get(1));
+            ps.setDouble(3, distance);
+
+            // 执行update操作
+            int resultSet = ps.executeUpdate();
+            System.out.printf("resultset = %d\n", resultSet);
+            if (resultSet > 0)
+                System.out.println("success");
+            else
+                System.out.println("failure");
+
+            stmt.close();
+            conn.close();
+        } catch (SQLException se)
+        {
+            // 处理 JDBC 错误
+            JOptionPane.showMessageDialog(null,
+                    "录入数据错误！两个人的身份证号不能一致，请检查您的输入！",
+                    "出错啦", JOptionPane.INFORMATION_MESSAGE);
+            se.printStackTrace();
+            return false;
+        } catch (Exception eee)
+        {
+            // 处理 Class.forName 错误
+            eee.printStackTrace();
+            return false;
+        } finally
+        {
+            // 关闭资源
+            try
+            {
+                if (stmt != null) stmt.close();
+            } catch (SQLException se2)
+            {
+                return false;
+            }// 什么都不做
+            try
+            {
+                if (conn != null) conn.close();
+            } catch (SQLException se)
+            {
+                se.printStackTrace();
+                return false;
+            }
+        }
+
+        // 更新村民信息表格
+//        UpdateVillagerData();
+
+        // 更新距离信息
+        UpdateDistanceData();
+
+        return true;
+    }
+
     // 往村民数据库中增加一条数据
-    private boolean addOneData(Villager v)
+    private boolean addOneVillagerData(Villager v)
     {
         Connection conn = null;
         Statement stmt = null;
@@ -369,7 +453,6 @@ public class MyFrame extends JFrame
         // 录入数据之后更新表格
         UpdateVillagerData();
 
-        // TODO:这里要判断是否成功，失败则返回false
         return true;
     }
 
@@ -500,7 +583,7 @@ public class MyFrame extends JFrame
                 Villager v = villagerDialog.getValue();
 
                 // 录入数据
-                if (addOneData(v))
+                if (addOneVillagerData(v))
                 {
                     UpdateVillagerData();
                     JOptionPane.showMessageDialog(null,
@@ -1066,7 +1149,7 @@ public class MyFrame extends JFrame
                 Villager v = villagerDialog.getValue();
 
                 // 录入数据
-                if (addOneData(v))
+                if (addOneVillagerData(v))
                 {
                     UpdateVillagerData();
                     JOptionPane.showMessageDialog(null,

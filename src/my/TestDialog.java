@@ -70,6 +70,11 @@ public class TestDialog extends JDialog
         return true;
     }
 
+    public boolean getRetValue()
+    {
+        return this.retValue;
+    }
+
     public Vector<String> getValue()
     {
         Vector<String> v = new Vector<String>();
