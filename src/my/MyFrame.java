@@ -12,6 +12,9 @@ import javax.swing.table.DefaultTableModel;
 
 public class MyFrame extends JFrame
 {
+    // 是最喜欢的丁香紫啊
+    private final Color zyc_lilac = new Color(0xc8a2c8);
+
     // MySQL 8.0 以下版本 - JDBC 驱动名及数据库 URL
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     static final String DB_URL = "jdbc:mysql://localhost:3306/yc_data";
@@ -44,6 +47,9 @@ public class MyFrame extends JFrame
     // 指示是否需要更新Combobox中的元素的Flag
     boolean UpdateComboboxFlag = true;
 
+    private int ZYC_WIDTH = 1000;
+    private final int ZYC_HEIGHT = 750;
+
     void init()
     {
         // 添加条目选中状态改变的监听器
@@ -64,7 +70,7 @@ public class MyFrame extends JFrame
     // 测试函数
     void test()
     {
-
+        showMapJframe();
     }
 
     // 展示最短路可视化对话框
@@ -73,12 +79,88 @@ public class MyFrame extends JFrame
         JFrame frame = new JFrame();
         frame = new JFrame();
         frame.setVisible(true);
+        // 不可调整大小，没有设置重绘方法
         frame.setResizable(false);
-        frame.setSize(WIDTH, HEIGHT);
+        frame.setSize(ZYC_WIDTH, ZYC_HEIGHT);
         frame.setTitle("寻找最短路径---By 钟雨初");
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setLocationRelativeTo(null);
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(null);
+//        frame.getContentPane().setLayout(new FlowLayout()); // TODO:先设置为流式布局，之后完善
+
+        Map m = new Map();
+        m.setBounds(123, 10, 100, 100);
+
+//        frame.add(m);
+        frame.add(new JLabel("dgdg"));
+        frame.add(m);
+    }
+
+    // TODO：完善Map画图
+    // 内部类，用来做出图
+    class Map extends JPanel implements MouseListener, MouseMotionListener
+    {
+        public Map()
+        {
+            addMouseListener(this);
+            addMouseMotionListener(this);
+        }
+
+        @Override
+        public void paintComponent(Graphics g)
+        {
+            super.paintComponent(g);
+            int width = this.getWidth();
+            int height = this.getHeight();
+            System.out.printf("width = %d, height = %d\n", width, height);
+
+            g.setColor(Color.BLACK);
+            g.fillRect(0, 0, width / 2, height);
+            g.setColor(zyc_lilac);
+            g.fillRect(width / 2, 0, width / 2 - 1, height);
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent e)
+        {
+
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e)
+        {
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e)
+        {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e)
+        {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e)
+        {
+
+        }
+
+        @Override
+        public void mouseDragged(MouseEvent e)
+        {
+
+        }
+
+        @Override
+        public void mouseMoved(MouseEvent e)
+        {
+
+        }
     }
 
     public MyFrame(String title)
@@ -1329,67 +1411,5 @@ public class MyFrame extends JFrame
         }
     }
 
-    // TODO：完善Map画图
-    // 内部类，用来
-    class Map extends JPanel implements MouseListener, MouseMotionListener
-    {
-        public Map()
-        {
-            addMouseListener(this);
-            addMouseMotionListener(this);
-        }
 
-        @Override
-        public void paintComponent(Graphics g)
-        {
-            super.paintComponent(g);
-            int width = this.getWidth();
-            int height = this.getHeight();
-
-            g.setColor(Color.BLACK);
-            g.fillRect(0, 0, width / 2, height / 2);
-        }
-
-        @Override
-        public void mouseClicked(MouseEvent e)
-        {
-
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e)
-        {
-
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e)
-        {
-
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e)
-        {
-
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e)
-        {
-
-        }
-
-        @Override
-        public void mouseDragged(MouseEvent e)
-        {
-
-        }
-
-        @Override
-        public void mouseMoved(MouseEvent e)
-        {
-
-        }
-    }
 }
