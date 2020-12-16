@@ -443,17 +443,17 @@ public class MyFrame extends JFrame
 
     private boolean addOneDistanceData(Vector<String> v)
     {
-        double distance = 0;
-        try
-        {
-            distance = Double.valueOf(v.get(2));
-        } catch (NumberFormatException e)
-        {
-            JOptionPane.showMessageDialog(null,
-                    "输入的距离数据不合法！请重新输入！", "错误", JOptionPane.INFORMATION_MESSAGE);
-
-            return false;
-        }
+//        double distance = 0;
+//        try
+//        {
+//            distance = Double.valueOf(v.get(2));
+//        } catch (NumberFormatException e)
+//        {
+//            JOptionPane.showMessageDialog(null,
+//                    "输入的距离数据不合法！请重新输入！", "错误", JOptionPane.INFORMATION_MESSAGE);
+//
+//            return false;
+//        }
 
         Connection conn = null;
         Statement stmt = null;
@@ -468,12 +468,12 @@ public class MyFrame extends JFrame
 
 
             // 写sql语句
-            String sql = "insert into village_distances" +
-                    " (src, dest, distance_kilo) values(?, ?, ?)";
+            String sql = "insert into village_pos" +
+                    " (x, y, village) values(?, ?, ?)";
             ps = conn.prepareStatement(sql);
-            ps.setString(1, v.get(0));
-            ps.setString(2, v.get(1));
-            ps.setDouble(3, distance);
+            ps.setInt(1, Integer.parseInt(v.get(0)));
+            ps.setInt(2, Integer.parseInt(v.get(1)));
+            ps.setString(3, v.get(2));
 
             // 执行update操作
             int resultSet = ps.executeUpdate();
@@ -1260,9 +1260,9 @@ public class MyFrame extends JFrame
         Distancetable.setRowSelectionAllowed(true); // 整行选择(这一条的作用不明)
         p1.add(scrollPane);
 
-        DistancetableModel.addColumn("村庄A");
-        DistancetableModel.addColumn("村庄B");
-        DistancetableModel.addColumn("距离");
+        DistancetableModel.addColumn("该村在地图上的x坐标");
+        DistancetableModel.addColumn("该村在地图上的y坐标");
+        DistancetableModel.addColumn("村庄名");
 
         setDistanceInfo();
 
