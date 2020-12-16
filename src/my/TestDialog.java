@@ -14,18 +14,18 @@ public class TestDialog extends JDialog
 
     public TestDialog(JFrame owner)
     {
-        super(owner, "增加村庄距离信息", true);
+        super(owner, "增加村庄位置信息", true);
         this.setSize(600, 100);
 
-        add(new JLabel("村庄1"));
+        add(new JLabel("该村在地图上的x坐标"));
         src = new JTextField(7);
         add(src);
 
-        add(new JLabel("村庄2"));
+        add(new JLabel("该村在地图上的y坐标"));
         dest = new JTextField(7);
         add(dest);
 
-        add(new JLabel("距离"));
+        add(new JLabel("村庄名"));
         distance = new JTextField(7);
         add(distance);
 
@@ -53,17 +53,17 @@ public class TestDialog extends JDialog
         Vector<String> v = this.getValue();
         if (v.get(0).isEmpty())
         {
-            JOptionPane.showMessageDialog(this, "村庄1不能为空！请重新输入！");
+            JOptionPane.showMessageDialog(this, "村庄在地图上的x坐标不能为空！请重新输入！");
             return false;
         }
         if (v.get(1).isEmpty())
         {
-            JOptionPane.showMessageDialog(this, "村庄2不能为空！请重新输入！");
+            JOptionPane.showMessageDialog(this, "村庄在地图上的y不能为空！请重新输入！");
             return false;
         }
         if (v.get(2).isEmpty())
         {
-            JOptionPane.showMessageDialog(this, "两村距离不能为空！请重新输入！");
+            JOptionPane.showMessageDialog(this, "村庄名不能为空");
             return false;
         }
 
