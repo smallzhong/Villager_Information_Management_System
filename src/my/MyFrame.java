@@ -1,5 +1,8 @@
 package my;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 import java.awt.event.*;
 import java.sql.*;
 
@@ -108,16 +111,22 @@ public class MyFrame extends JFrame
     private int village2y = -1;
 
     boolean vis[][];
+    Pair prev[][];
+    boolean ispath[][];
 
     void init()
     {
+        ispath = new boolean[cell_ct][cell_ct];
+        prev = new Pair[cell_ct][cell_ct];
+
         // 初始化vis数组
         vis = new boolean[cell_ct][cell_ct];
-        for (int i = 0; i < cell_ct; i ++ )
+        for (int i = 0; i < cell_ct; i++)
         {
-            for (int j = 0; j < cell_ct; j ++ )
+            for (int j = 0; j < cell_ct; j++)
             {
                 vis[i][j] = false;
+                ispath[i][j] = false;
             }
         }
 
@@ -185,6 +194,16 @@ public class MyFrame extends JFrame
 
         JButton refreshCombobox = new JButton("刷新村庄信息");
         panel.add(refreshCombobox);
+        refreshCombobox.addActionListener(e ->
+        {
+            // 如果两个一样，说明用户没有对村庄进行选择
+            if (startPointComboBox.getSelectedItem().equals(endPointCombobox.getSelectedItem()))
+                return;
+            // 更新选择的村庄的信息
+            getSelectVillagePos();
+            // 重绘画布
+            roadMap.repaint();
+        });
 
         frame.add(panel);
 
@@ -203,7 +222,20 @@ public class MyFrame extends JFrame
             // 获取了起点和终点，重绘一遍
             roadMap.repaint();
 
+
             solve();
+
+            for (int i = 0; i < cell_ct; i++)
+            {
+                System.out.printf("\n");
+                for (int j = 0; j < cell_ct; j++)
+                {
+                    System.out.printf("%d ", vis[i][j] ? 1 : 0);
+                }
+            }
+            System.out.printf("\n");
+            // 解决了之后重绘一遍
+            roadMap.repaint();
 
 //            paintStartPointAndEndPoint();
 //
@@ -213,8 +245,62 @@ public class MyFrame extends JFrame
         });
     }
 
+    private boolean check(int x, int y)
+    {
+        if (x < 0 || y < 0 || x >= cell_ct || y >= cell_ct) return false;
+        if (vis[x][y]) return false;
+        if (barrier[x][y] == 0) return false;
+
+        return true;
+    }
+
     private void solve()
     {
+        // 初始化prev(之前的那个会被gc掉，不用自己处理)
+        prev = new Pair[cell_ct][cell_ct];
+        // 初始化vis
+        for (int i = 0; i < cell_ct; i++)
+        {
+            for (int j = 0; j < cell_ct; j++)
+            {
+                vis[i][j] = false;
+                ispath[i][j] = false;
+            }
+        }
+
+        //初始化队列
+        Queue<Pair> q = new LinkedList<Pair>();
+        int[] dy = {0, 1, 0, -1}, dx = {-1, 0, 1, 0};
+
+        vis[village1x][village1y] = true;
+        q.offer(new Pair(village1x, village1y));
+
+        while (!q.isEmpty())
+        {
+            Pair pair = q.poll();
+            if (pair.x == village2x && pair.y == village2y)
+            {
+                System.out.printf("找到了！\n");
+                break;
+            }
+
+            for (int i = 0; i < 4; i++)
+            {
+                int tx = pair.x + dx[i];
+                int ty = pair.y + dy[i];
+                if (check(tx, ty))
+                {
+                    q.offer(new Pair(tx, ty));
+                    vis[tx][ty] = true;
+
+                    roadMap.repaint(); // 每一次设置一个vis为true就repaint一遍
+
+                    prev[tx][ty] = pair;
+                }
+            }
+        }
+
+
 
     }
 
@@ -385,12 +471,16 @@ public class MyFrame extends JFrame
             g.setColor(Color.WHITE);
             g.fillRect(0, 0, width, height);
 
+            // 画出障碍物（丁香紫色）
+            g.setColor(zyc_lilac);
+            setWalls(g);
+
             // 当起点被设置了
             // TODO:这里可以换成 `~village1x`
             if (village1x != -1 && village1y != -1)
             {
-                // 起点是红色的
-                g.setColor(Color.RED);
+                // 起点是黑色的
+                g.setColor(Color.BLACK);
                 g.fillRect(village1x * CSIZE, village1y * CSIZE, CSIZE, CSIZE);
             }
 
@@ -401,10 +491,6 @@ public class MyFrame extends JFrame
                 g.setColor(Color.GREEN);
                 g.fillRect(village2x * CSIZE, village2y * CSIZE, CSIZE, CSIZE);
             }
-
-            // 画出障碍物（丁香紫色）
-            g.setColor(zyc_lilac);
-            setWalls(g);
 
             // 最后画蓝色的线（防止线被覆盖）
             g.setColor(Color.BLUE); // 网格线设置为蓝色
