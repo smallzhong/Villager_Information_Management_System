@@ -127,7 +127,8 @@ public class LoginDialog extends JDialog implements KeyListener
         System.out.printf("%d\n", e.getKeyCode());
         if ((e.getKeyCode() == KeyEvent.VK_ENTER))
         {
-            System.out.println("enter被点击了！");
+            // 如果焦点在JFrame里面而且点击了enter，也结束。（好像这个并不会被触发）
+            setVisible(false);
         }
     }
 
