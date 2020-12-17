@@ -213,9 +213,18 @@ public class MyFrame extends JFrame
         }
     }
 
+    private boolean login()
+    {
+        LoginDialog l = new LoginDialog(this);
+        return false;
+    }
+
     public MyFrame(String title)
     {
         super("8003119075 钟雨初");
+
+        // 不断弹出登录窗口，直到登录成功
+        while (!login());
 
         test();
 
