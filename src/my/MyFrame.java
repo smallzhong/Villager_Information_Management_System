@@ -191,7 +191,7 @@ public class MyFrame extends JFrame
         panel.add(startPointComboBox);
 
         // 用户一选择就直接更新图上的点
-        startPointComboBox.addActionListener(e->
+        startPointComboBox.addActionListener(e ->
         {
             if (startPointComboBox.getSelectedItem().equals(endPointCombobox.getSelectedItem()))
                 return;
@@ -204,7 +204,7 @@ public class MyFrame extends JFrame
         panel.add(endPointCombobox);
 
         // 用户一选择就直接更新图上的点
-        endPointCombobox.addActionListener(e->
+        endPointCombobox.addActionListener(e ->
         {
             if (startPointComboBox.getSelectedItem().equals(endPointCombobox.getSelectedItem()))
                 return;
@@ -222,6 +222,15 @@ public class MyFrame extends JFrame
             // 更新选择的村庄的信息
             getSelectVillagePos();
             // 重绘画布
+            roadMap.repaint();
+        });
+
+        JButton showInqPath = new JButton("展示搜索过程中搜索到的点");
+        panel.add(showInqPath);
+        showInqPath.addActionListener(e ->
+        {
+            if (showInq) showInq = false;
+            else showInq = true;
             roadMap.repaint();
         });
 
