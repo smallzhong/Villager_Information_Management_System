@@ -190,9 +190,27 @@ public class MyFrame extends JFrame
         startPointComboBox = getVillageCombobox();
         panel.add(startPointComboBox);
 
+        // 用户一选择就直接更新图上的点
+        startPointComboBox.addActionListener(e->
+        {
+            if (startPointComboBox.getSelectedItem().equals(endPointCombobox.getSelectedItem()))
+                return;
+            getSelectVillagePos();
+            roadMap.repaint();
+        });
+
         // 终点村庄对话框
         endPointCombobox = getVillageCombobox();
         panel.add(endPointCombobox);
+
+        // 用户一选择就直接更新图上的点
+        endPointCombobox.addActionListener(e->
+        {
+            if (startPointComboBox.getSelectedItem().equals(endPointCombobox.getSelectedItem()))
+                return;
+            getSelectVillagePos();
+            roadMap.repaint();
+        });
 
         JButton refreshCombobox = new JButton("刷新村庄信息");
         panel.add(refreshCombobox);
@@ -531,7 +549,7 @@ public class MyFrame extends JFrame
                         g.setColor(zyc_lilac);
                         g.fillRect(i * CSIZE, j * CSIZE, CSIZE, CSIZE);
                     }
-                    
+
                     // 如果这个曾经入过队而且设置了展示搜索路径
                     if (vis[i][j] == true && showInq)
                     {
