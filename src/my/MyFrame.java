@@ -245,15 +245,6 @@ public class MyFrame extends JFrame
 
             solve();
 
-            for (int i = 0; i < cell_ct; i++)
-            {
-                System.out.printf("\n");
-                for (int j = 0; j < cell_ct; j++)
-                {
-                    System.out.printf("%d ", vis[i][j] ? 1 : 0);
-                }
-            }
-            System.out.printf("\n");
             // 解决了之后重绘一遍
             roadMap.repaint();
 
