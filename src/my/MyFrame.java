@@ -60,6 +60,14 @@ public class MyFrame extends JFrame
     private int ZYC_WIDTH = 1000;
     private final int ZYC_HEIGHT = 750;
 
+    JComboBox<String> startPointComboBox = null;
+    JComboBox<String> endPointCombobox = null;
+
+    private int village1x = 0;
+    private int village1y = 0;
+    private int village2x = 0;
+    private int village2y = 0;
+
     void init()
     {
         // 添加条目选中状态改变的监听器
@@ -105,23 +113,173 @@ public class MyFrame extends JFrame
 
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout());
-        panel.add(new JLabel("rewtetetetet"));
+//        panel.setLayout(null);
         panel.setVisible(true);
         panel.setBounds(10, 10, 230, MAP_HEIGHT + 1);
 //        panel.setBackground(Color.BLACK);
         panel.setBorder(BorderFactory.createTitledBorder("操作面板"));
 
+        // 开始搜索
+        JButton beginSearch = new JButton("开始搜索");
+        panel.add(beginSearch);
+
+        // TODO:这里要能够刷新这个combobox里面的数据
+        // 起点村庄对话框
+        startPointComboBox = getVillageCombobox();
+        panel.add(startPointComboBox);
+
+        // 终点村庄对话框
+        endPointCombobox = getVillageCombobox();
+        panel.add(endPointCombobox);
+
+        JButton refreshCombobox = new JButton("刷新村庄信息");
+        panel.add(refreshCombobox);
+
         frame.add(panel);
 
-//        JButton startAlgo = new JButton("测试");
-//        startAlgo.setBounds(20, 200, 100, 100);
-//
-//        startAlgo.addActionListener(e->
-//        {
-//            System.out.printf("测试被点击了\n");
-//        });
-//
-//        frame.add(startAlgo);
+        beginSearch.addActionListener(e ->
+        {
+            getSelectVillagePos();
+            System.out.printf("%d %d %d %d\n", village1x, village1y, village2x, village2y);
+        });
+    }
+
+    // 用来获取被选中的村庄的信息并更新信息
+    private boolean getSelectVillagePos()
+    {
+        Connection conn = null;
+        Statement stmt = null;
+        try
+        {
+            // 注册 JDBC 驱动
+            Class.forName(JDBC_DRIVER);
+
+            // 打开链接
+            conn = DriverManager.getConnection(DB_URL, SQL_USER, SQL_PASS);
+
+            // 执行查询
+            stmt = conn.createStatement();
+            String sql;
+            sql = "SELECT x, y FROM village_pos WHERE village = \"" + startPointComboBox.getSelectedItem() + "\"";
+            ResultSet rs = stmt.executeQuery(sql);
+
+            // 展开结果集数据库
+            while (rs.next())
+            {
+                // 通过字段检索
+                village1x = rs.getInt("x");
+                village1y = rs.getInt("y");
+            }
+
+            sql = "SELECT x, y FROM village_pos WHERE village = \"" + endPointCombobox.getSelectedItem() + "\"";
+            rs = stmt.executeQuery(sql);
+
+            while (rs.next())
+            {
+                village2x = rs.getInt("x");
+                village2y = rs.getInt("y");
+            }
+
+            // 完成后关闭
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException se)
+        {
+            // 处理 JDBC 错误
+            se.printStackTrace();
+            return false;
+        } catch (Exception e)
+        {
+            // 处理 Class.forName 错误
+            e.printStackTrace();
+            return false;
+        } finally
+        {
+            // 关闭资源
+            try
+            {
+                if (stmt != null) stmt.close();
+            } catch (SQLException se2)
+            {
+                return false;
+            }// 什么都不做
+            try
+            {
+                if (conn != null) conn.close();
+            } catch (SQLException se)
+            {
+                se.printStackTrace();
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // 获取一个有全部村庄信息的combobox
+    private JComboBox getVillageCombobox()
+    {
+        JComboBox<String> c = new JComboBox<String>();
+        Connection conn = null;
+        Statement stmt = null;
+        try
+        {
+            // 注册 JDBC 驱动
+            Class.forName(JDBC_DRIVER);
+
+            // 打开链接
+            conn = DriverManager.getConnection(DB_URL, SQL_USER, SQL_PASS);
+
+            // 执行查询
+            stmt = conn.createStatement();
+            String sql;
+            sql = "SELECT x, y, village FROM village_pos";
+            ResultSet rs = stmt.executeQuery(sql);
+
+            // 展开结果集数据库
+            while (rs.next())
+            {
+                // 通过字段检索
+//                int x = rs.getInt("x");
+//                int y = rs.getInt("y");
+                String village = rs.getString("village");
+
+                // 添加到combobox里面去
+                c.addItem(village);
+            }
+
+            // 完成后关闭
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException se)
+        {
+            // 处理 JDBC 错误
+            se.printStackTrace();
+        } catch (Exception e)
+        {
+            // 处理 Class.forName 错误
+            e.printStackTrace();
+        } finally
+        {
+            // 关闭资源
+            try
+            {
+                if (stmt != null) stmt.close();
+            } catch (SQLException se2)
+            {
+            }// 什么都不做
+            try
+            {
+                if (conn != null) conn.close();
+            } catch (SQLException se)
+            {
+                se.printStackTrace();
+            }
+        }
+
+        return c;
     }
 
     // TODO：完善Map画图
@@ -1073,7 +1231,6 @@ public class MyFrame extends JFrame
                 se.printStackTrace();
             }
         }
-//        System.out.println("Goodbye!");
     }
 
     private void onDelete()
