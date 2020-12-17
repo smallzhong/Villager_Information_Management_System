@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="bigproject:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/bigproject_jar</output-path>
+    <root id="archive" name="bigproject.jar">
+      <element id="module-output" name="bigproject" />
+      <element id="extracted-dir" path="D:/JARFILES/org.json-1.0.0.v201011060100.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="D:/mysql-connector-java-5.1.39-bin.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
