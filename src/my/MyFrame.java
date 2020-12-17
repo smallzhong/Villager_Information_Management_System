@@ -248,11 +248,11 @@ public class MyFrame extends JFrame
         JMenuItem fileOpenCmd = new JMenuItem("村庄位置信息");
         JMenuItem fileSaveCmd = new JMenuItem("视图2");
         JMenuItem fileSaveAsCmd = new JMenuItem("村民信息");
-        JMenuItem test2 = new JMenuItem("展示最短路可视化对话框");
+        JMenuItem shortestPathVisible = new JMenuItem("展示最短路可视化对话框");
         fileMenu.add(fileOpenCmd);
         fileMenu.add(fileSaveCmd);
         fileMenu.add(fileSaveAsCmd);
-        fileMenu.add(test2);
+        fileMenu.add(shortestPathVisible);
 
         JMenuItem fileExitCmd = new JMenuItem("退出");
         fileMenu.addSeparator();
@@ -272,7 +272,7 @@ public class MyFrame extends JFrame
         operateMenu.add(addItem);
 
         // 测试按钮
-        test2.addActionListener(e ->
+        shortestPathVisible.addActionListener(e ->
         {
             showMapJframe();
         });
