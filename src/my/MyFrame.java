@@ -114,7 +114,7 @@ public class MyFrame extends JFrame
     Pair prev[][];
     boolean ispath[][];
 
-    
+    private boolean showInq = false;
 
     void init()
     {
@@ -531,7 +531,9 @@ public class MyFrame extends JFrame
                         g.setColor(zyc_lilac);
                         g.fillRect(i * CSIZE, j * CSIZE, CSIZE, CSIZE);
                     }
-                    if (vis[i][j] == true)
+                    
+                    // 如果这个曾经入过队而且设置了展示搜索路径
+                    if (vis[i][j] == true && showInq)
                     {
                         g.setColor(Color.RED);
                         g.fillRect(i * CSIZE, j * CSIZE, CSIZE, CSIZE);
