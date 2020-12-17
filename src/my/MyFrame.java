@@ -193,6 +193,10 @@ public class MyFrame extends JFrame
         // 用户一选择就直接更新图上的点
         startPointComboBox.addActionListener(e ->
         {
+            // 一旦更改，直接全部清空
+            ispath = new boolean[cell_ct][cell_ct];
+            vis = new boolean[cell_ct][cell_ct];
+
             if (startPointComboBox.getSelectedItem().equals(endPointCombobox.getSelectedItem()))
                 return;
             getSelectVillagePos();
@@ -206,6 +210,9 @@ public class MyFrame extends JFrame
         // 用户一选择就直接更新图上的点
         endPointCombobox.addActionListener(e ->
         {
+            // 一旦更改，直接全部清空
+            ispath = new boolean[cell_ct][cell_ct];
+            vis = new boolean[cell_ct][cell_ct];
             if (startPointComboBox.getSelectedItem().equals(endPointCombobox.getSelectedItem()))
                 return;
             getSelectVillagePos();
