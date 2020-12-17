@@ -150,7 +150,7 @@ public class MyFrame extends JFrame
     // 测试函数
     void test()
     {
-        showMapJframe();
+        // showMapJframe();
     }
 
     // 展示最短路可视化对话框
@@ -162,7 +162,7 @@ public class MyFrame extends JFrame
         // 不可调整大小，没有设置重绘方法
         frame.setResizable(false);
         frame.setSize(ZYC_WIDTH, ZYC_HEIGHT);
-        frame.setTitle("最短路可视化 8003119075 钟雨初");
+        frame.setTitle("村庄地图 8003119075 钟雨初");
 //        frame.setLocationRelativeTo(null);
 //        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(null);
