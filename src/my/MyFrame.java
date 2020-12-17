@@ -114,6 +114,8 @@ public class MyFrame extends JFrame
     Pair prev[][];
     boolean ispath[][];
 
+    
+
     void init()
     {
         ispath = new boolean[cell_ct][cell_ct];
@@ -300,7 +302,14 @@ public class MyFrame extends JFrame
             }
         }
 
-
+        int x = village2x, y = village2y;
+        while (x != village1x && y != village1y)
+        {
+            Pair t = prev[x][y];
+            ispath[t.x][t.y] = true;
+            x = t.x;
+            y = t.y;
+        }
 
     }
 
@@ -522,9 +531,14 @@ public class MyFrame extends JFrame
                         g.setColor(zyc_lilac);
                         g.fillRect(i * CSIZE, j * CSIZE, CSIZE, CSIZE);
                     }
-                    else if (vis[i][j] == true)
+                    if (vis[i][j] == true)
                     {
                         g.setColor(Color.RED);
+                        g.fillRect(i * CSIZE, j * CSIZE, CSIZE, CSIZE);
+                    }
+                    if (ispath[i][j] == true)
+                    {
+                        g.setColor(Color.PINK);
                         g.fillRect(i * CSIZE, j * CSIZE, CSIZE, CSIZE);
                     }
                 }
