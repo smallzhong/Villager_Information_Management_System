@@ -2,8 +2,10 @@ package my;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class LoginDialog extends JDialog
+public class LoginDialog extends JDialog implements KeyListener
 {
     JTextField usr = null;
     JPasswordField  pwd = null;
@@ -18,14 +20,67 @@ public class LoginDialog extends JDialog
         super(owner, "增加村庄位置信息", true);
         this.setSize(300, 100);
 
+        // 增加按键捕捉
+        addKeyListener(this);
+
 
         add(new JLabel("登录账号"));
         usr = new JTextField(7);
         add(usr);
 
+        usr.addKeyListener(new KeyListener()
+        {
+            @Override
+            public void keyTyped(KeyEvent e)
+            {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e)
+            {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e)
+            {
+                if ((e.getKeyCode() == KeyEvent.VK_ENTER))
+                {
+                    // 如果按了enter则把焦点转移到填写密码的窗口上面去
+                    pwd.requestFocus();
+                }
+            }
+        });
+
         add(new JLabel("密码"));
         pwd = new JPasswordField(7);
         add(pwd);
+
+        // 如果在输入密码的时候按了enter则视为按了确定键
+        pwd.addKeyListener(new KeyListener()
+        {
+            @Override
+            public void keyTyped(KeyEvent e)
+            {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e)
+            {
+                if ((e.getKeyCode() == KeyEvent.VK_ENTER))
+                {
+                    setVisible(false);
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e)
+            {
+
+            }
+        });
 
         JButton okButton = new JButton("确定");
         add(okButton);
@@ -58,5 +113,27 @@ public class LoginDialog extends JDialog
         }
         if (!pwd.getText().equals(PASSWORD)) return false;
         return true;
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e)
+    {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e)
+    {
+        System.out.printf("%d\n", e.getKeyCode());
+        if ((e.getKeyCode() == KeyEvent.VK_ENTER))
+        {
+            System.out.println("enter被点击了！");
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e)
+    {
+
     }
 }
