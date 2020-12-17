@@ -13,6 +13,9 @@ import javax.swing.table.DefaultTableModel;
 
 public class MyFrame extends JFrame
 {
+    // 调试时设置为true，发布时设置为false
+    private final boolean isdebug = true;
+
     private final int CSIZE = 20; // 网格中的边框大小
     private final int cell_ct = 31; // 一排有多少个格子
     private final int MAP_HEIGHT = CSIZE * cell_ct;
@@ -98,8 +101,17 @@ public class MyFrame extends JFrame
         Map m = new Map();
         m.setBounds(123, 10, MAP_WIDTH + 1, MAP_HEIGHT + 1); // 要+1，防止边上的线不显示
 
-//        frame.add(m);
         frame.add(m);
+
+        JButton startAlgo = new JButton("测试");
+        startAlgo.setBounds(20, 20, 100, 100);
+
+        startAlgo.addActionListener(e->
+        {
+            System.out.printf("测试被点击了\n");
+        });
+
+        frame.add(startAlgo);
     }
 
     // TODO：完善Map画图
@@ -224,15 +236,18 @@ public class MyFrame extends JFrame
         super("8003119075 钟雨初");
 
         // 不断弹出登录窗口，直到登录成功
-        while (!login())
+        if (isdebug == false)
         {
-            JOptionPane.showMessageDialog(null,
-                    "登录失败，用户名或密码错误！请重新输入！",
-                    "登录失败，用户名或密码错误！", JOptionPane.INFORMATION_MESSAGE);
-        }
+            while (!login())
+            {
+                JOptionPane.showMessageDialog(null,
+                        "登录失败，用户名或密码错误！请重新输入！",
+                        "登录失败，用户名或密码错误！", JOptionPane.INFORMATION_MESSAGE);
+            }
 
-        JOptionPane.showMessageDialog(null,
-                "登录成功！", "登录成功！", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null,
+                    "登录成功！", "登录成功！", JOptionPane.INFORMATION_MESSAGE);
+        }
 
         test();
 
