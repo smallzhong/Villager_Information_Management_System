@@ -107,8 +107,20 @@ public class MyFrame extends JFrame
     private int village2x = -1;
     private int village2y = -1;
 
+    boolean vis[][];
+
     void init()
     {
+        // 初始化vis数组
+        vis = new boolean[cell_ct][cell_ct];
+        for (int i = 0; i < cell_ct; i ++ )
+        {
+            for (int j = 0; j < cell_ct; j ++ )
+            {
+                vis[i][j] = false;
+            }
+        }
+
         // 添加条目选中状态改变的监听器
         VillageCombobox.addItemListener(e ->
         {
@@ -188,12 +200,22 @@ public class MyFrame extends JFrame
             getSelectVillagePos();
             System.out.printf("%d %d %d %d\n", village1x, village1y, village2x, village2y);
 
-            paintStartPointAndEndPoint();
-
-            // 开始解题，设置issolving = true
-            issolving = true;
+            // 获取了起点和终点，重绘一遍
             roadMap.repaint();
+
+            solve();
+
+//            paintStartPointAndEndPoint();
+//
+//            // 开始解题，设置issolving = true
+//            issolving = true;
+//            roadMap.repaint();
         });
+    }
+
+    private void solve()
+    {
+
     }
 
     // TODO：在map上画出起点和终点
@@ -351,23 +373,9 @@ public class MyFrame extends JFrame
             addMouseMotionListener(this);
         }
 
-        public void runBFS(Graphics g)
-        {
-            System.out.printf("inside runbfs\n");
-            g.setColor(Color.BLACK);
-            g.fillRect(0, 0, getWidth(), getHeight());
-        }
-
         @Override
         public void paintComponent(Graphics g)
         {
-            if (issolving)
-            {
-                runBFS(g);
-                issolving = false;
-                return;
-            }
-
             System.out.printf("repainting!\n");
             super.paintComponent(g);
             int width = this.getWidth();
@@ -418,7 +426,6 @@ public class MyFrame extends JFrame
         // TODO：设置墙壁障碍
         private void setWalls(Graphics g)
         {
-            g.setColor(zyc_lilac);
 
             for (int i = 0; i < cell_ct; i++)
             {
@@ -426,28 +433,16 @@ public class MyFrame extends JFrame
                 {
                     if (barrier[i][j] == 0)
                     {
+                        g.setColor(zyc_lilac);
+                        g.fillRect(i * CSIZE, j * CSIZE, CSIZE, CSIZE);
+                    }
+                    else if (vis[i][j] == true)
+                    {
+                        g.setColor(Color.RED);
                         g.fillRect(i * CSIZE, j * CSIZE, CSIZE, CSIZE);
                     }
                 }
             }
-//            for (int i = 0; i < cell_ct; i++)
-//            {
-//                for (int j = 0; j < cell_ct; j++)
-//                {
-//                    int min = 0; // 定义随机数的最小值
-//                    int max = 3; // 定义随机数的最大值(不可取到最大值)
-//                    // 产生一个0~3的数
-//                    int s = (int) min + (int) (Math.random() * (max - min));
-//                    if (s == 0)
-//                    {
-//                        g.fillRect(i * CSIZE, j * CSIZE, CSIZE, CSIZE);
-//                    }
-//                    else
-//                    {
-//
-//                    }
-//                }
-//            }
         }
 
         @Override
