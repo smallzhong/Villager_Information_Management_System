@@ -312,7 +312,7 @@ public class MyFrame extends JFrame
         }
 
         int x = village2x, y = village2y;
-        while (x != village1x && y != village1y)
+        while (x != village1x || y != village1y)
         {
             Pair t = prev[x][y];
             ispath[t.x][t.y] = true;
