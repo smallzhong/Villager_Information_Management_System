@@ -59,6 +59,9 @@ public class MyFrame extends JFrame
     // 是最喜欢的丁香紫啊
     private final Color zyc_lilac = new Color(0xc8a2c8);
 
+    // 是否正在调用算法解题
+    private boolean issolving = false;
+
     // MySQL 8.0 以下版本 - JDBC 驱动名及数据库 URL
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     static final String DB_URL = "jdbc:mysql://localhost:3306/yc_data";
@@ -186,6 +189,10 @@ public class MyFrame extends JFrame
             System.out.printf("%d %d %d %d\n", village1x, village1y, village2x, village2y);
 
             paintStartPointAndEndPoint();
+
+            // 开始解题，设置issolving = true
+            issolving = true;
+            roadMap.repaint();
         });
     }
 
@@ -344,9 +351,23 @@ public class MyFrame extends JFrame
             addMouseMotionListener(this);
         }
 
+        public void runBFS(Graphics g)
+        {
+            System.out.printf("inside runbfs\n");
+            g.setColor(Color.BLACK);
+            g.fillRect(0, 0, getWidth(), getHeight());
+        }
+
         @Override
         public void paintComponent(Graphics g)
         {
+            if (issolving)
+            {
+                runBFS(g);
+                issolving = false;
+                return;
+            }
+
             System.out.printf("repainting!\n");
             super.paintComponent(g);
             int width = this.getWidth();
