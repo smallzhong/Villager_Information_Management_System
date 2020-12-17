@@ -216,7 +216,7 @@ public class MyFrame extends JFrame
     private boolean login()
     {
         LoginDialog l = new LoginDialog(this);
-        return false;
+        return l.checkValid();
     }
 
     public MyFrame(String title)
@@ -224,7 +224,15 @@ public class MyFrame extends JFrame
         super("8003119075 钟雨初");
 
         // 不断弹出登录窗口，直到登录成功
-        while (!login());
+        while (!login())
+        {
+            JOptionPane.showMessageDialog(null,
+                    "登录失败，用户名或密码错误！请重新输入！",
+                    "登录失败，用户名或密码错误！", JOptionPane.INFORMATION_MESSAGE);
+        }
+
+        JOptionPane.showMessageDialog(null,
+                "登录成功！", "登录成功！", JOptionPane.INFORMATION_MESSAGE);
 
         test();
 
