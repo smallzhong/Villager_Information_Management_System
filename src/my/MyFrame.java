@@ -99,19 +99,29 @@ public class MyFrame extends JFrame
 //        frame.getContentPane().setLayout(new FlowLayout()); // TODO:先设置为流式布局，之后完善
 
         Map m = new Map();
-        m.setBounds(123, 10, MAP_WIDTH + 1, MAP_HEIGHT + 1); // 要+1，防止边上的线不显示
+        m.setBounds(250, 10, MAP_WIDTH + 1, MAP_HEIGHT + 1); // 要+1，防止边上的线不显示
 
         frame.add(m);
 
-        JButton startAlgo = new JButton("测试");
-        startAlgo.setBounds(20, 20, 100, 100);
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout());
+        panel.add(new JLabel("rewtetetetet"));
+        panel.setVisible(true);
+        panel.setBounds(10, 10, 230, MAP_HEIGHT + 1);
+//        panel.setBackground(Color.BLACK);
+        panel.setBorder(BorderFactory.createTitledBorder("操作面板"));
 
-        startAlgo.addActionListener(e->
-        {
-            System.out.printf("测试被点击了\n");
-        });
+        frame.add(panel);
 
-        frame.add(startAlgo);
+//        JButton startAlgo = new JButton("测试");
+//        startAlgo.setBounds(20, 200, 100, 100);
+//
+//        startAlgo.addActionListener(e->
+//        {
+//            System.out.printf("测试被点击了\n");
+//        });
+//
+//        frame.add(startAlgo);
     }
 
     // TODO：完善Map画图
