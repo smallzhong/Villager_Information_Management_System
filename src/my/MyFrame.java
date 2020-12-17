@@ -63,10 +63,12 @@ public class MyFrame extends JFrame
     JComboBox<String> startPointComboBox = null;
     JComboBox<String> endPointCombobox = null;
 
-    private int village1x = 0;
-    private int village1y = 0;
-    private int village2x = 0;
-    private int village2y = 0;
+    Map roadMap;
+
+    private int village1x = -1;
+    private int village1y = -1;
+    private int village2x = -1;
+    private int village2y = -1;
 
     void init()
     {
@@ -106,10 +108,10 @@ public class MyFrame extends JFrame
         frame.getContentPane().setLayout(null);
 //        frame.getContentPane().setLayout(new FlowLayout()); // TODO:先设置为流式布局，之后完善
 
-        Map m = new Map();
-        m.setBounds(250, 10, MAP_WIDTH + 1, MAP_HEIGHT + 1); // 要+1，防止边上的线不显示
+        roadMap = new Map();
+        roadMap.setBounds(250, 10, MAP_WIDTH + 1, MAP_HEIGHT + 1); // 要+1，防止边上的线不显示
 
-        frame.add(m);
+        frame.add(roadMap);
 
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout());
@@ -144,10 +146,20 @@ public class MyFrame extends JFrame
             {
                 JOptionPane.showMessageDialog(null,
                         "起点和终点村庄不能一样！请重新选择！", "错误", JOptionPane.INFORMATION_MESSAGE);
+                return;
             }
             getSelectVillagePos();
             System.out.printf("%d %d %d %d\n", village1x, village1y, village2x, village2y);
+
+            paintStartPointAndEndPoint();
         });
+    }
+
+    // TODO：在map上画出起点和终点
+    private void paintStartPointAndEndPoint()
+    {
+        System.out.printf("正调用repaint!");
+        roadMap.repaint();
     }
 
     // 用来获取被选中的村庄的信息并更新信息
@@ -301,6 +313,7 @@ public class MyFrame extends JFrame
         @Override
         public void paintComponent(Graphics g)
         {
+            System.out.printf("repainting!\n");
             super.paintComponent(g);
             int width = this.getWidth();
             int height = this.getHeight();
