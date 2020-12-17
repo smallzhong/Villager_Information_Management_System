@@ -139,6 +139,12 @@ public class MyFrame extends JFrame
 
         beginSearch.addActionListener(e ->
         {
+            // 特判起点和终点村庄不能一样
+            if (startPointComboBox.getSelectedItem().equals(endPointCombobox.getSelectedItem()))
+            {
+                JOptionPane.showMessageDialog(null,
+                        "起点和终点村庄不能一样！请重新选择！", "错误", JOptionPane.INFORMATION_MESSAGE);
+            }
             getSelectVillagePos();
             System.out.printf("%d %d %d %d\n", village1x, village1y, village2x, village2y);
         });
