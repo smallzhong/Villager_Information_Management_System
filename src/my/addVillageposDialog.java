@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Vector;
 
-public class TestDialog extends JDialog
+public class addVillageposDialog extends JDialog
 {
     private boolean retValue = false;
 
@@ -12,7 +12,7 @@ public class TestDialog extends JDialog
     JTextField dest = null;
     JTextField distance = null;
 
-    public TestDialog(JFrame owner)
+    public addVillageposDialog(JFrame owner)
     {
         super(owner, "增加村庄位置信息", true);
         this.setSize(600, 100);

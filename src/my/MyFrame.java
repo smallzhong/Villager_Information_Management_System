@@ -685,7 +685,7 @@ public class MyFrame extends JFrame
 
         addDistanceInfo.addActionListener(e ->
         {
-            TestDialog test = new TestDialog(this);
+            addVillageposDialog test = new addVillageposDialog(this);
 
             Vector<String> v = test.getValue();
 
