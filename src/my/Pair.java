@@ -1,6 +1,5 @@
 package my;
 
-//存储路径
 public class Pair
 {
     int x;

@@ -57,7 +57,7 @@ public class LoginDialog extends JDialog implements KeyListener
         pwd = new JPasswordField(7);
         add(pwd);
 
-        // 如果在输入密码的时候按了enter则视为按了确定键
+        // 如果在输入密码的时候按了enter则视为按了登录键
         pwd.addKeyListener(new KeyListener()
         {
             @Override
@@ -82,7 +82,7 @@ public class LoginDialog extends JDialog implements KeyListener
             }
         });
 
-        JButton okButton = new JButton("确定");
+        JButton okButton = new JButton("登录");
         add(okButton);
 
         // 设置为流式布局
