@@ -1133,17 +1133,9 @@ public class MyFrame extends JFrame
         JMenuItem deleteMenuCmd = new JMenuItem("删除选中项");
         JMenuItem updateMenuCmd = new JMenuItem("修改选中项");
         JMenuItem addMenuCmd = new JMenuItem("增加一项记录");
-        JMenuItem testRightClickButton = new JMenuItem("测试（暂未使用）");
         menu.add(deleteMenuCmd);
         menu.add(updateMenuCmd);
         menu.add(addMenuCmd);
-//        menu.add(testRightClickButton);
-
-        // 测试按钮
-        testRightClickButton.addActionListener(ee ->
-        {
-            System.out.println("测试按钮被点击了");
-        });
 
         addMenuCmd.addActionListener(ee ->
         {
