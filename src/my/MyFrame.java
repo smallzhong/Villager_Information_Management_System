@@ -631,8 +631,10 @@ public class MyFrame extends JFrame
             while (!login())
             {
                 JOptionPane.showMessageDialog(null,
-                        "登录失败，用户名或密码错误！请重新输入！",
+                        "登录失败，用户名或密码错误！请重新登录！",
                         "登录失败，用户名或密码错误！", JOptionPane.INFORMATION_MESSAGE);
+                // 登录错误直接退出
+                System.exit(0);
             }
 
             JOptionPane.showMessageDialog(null,

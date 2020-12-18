@@ -17,7 +17,7 @@ public class LoginDialog extends JDialog implements KeyListener
 
     public LoginDialog(JFrame owner)
     {
-        super(owner, "增加村庄位置信息", true);
+        super(owner, "登录 钟雨初 8003119075", true);
         this.setSize(300, 100);
 
         // 增加按键捕捉
@@ -96,6 +96,8 @@ public class LoginDialog extends JDialog implements KeyListener
         {
             setVisible(false);
         });
+
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
         setVisible(true);
     }
