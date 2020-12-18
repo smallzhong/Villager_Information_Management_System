@@ -24,7 +24,7 @@ public class LoginDialog extends JDialog implements KeyListener
         addKeyListener(this);
 
 
-        add(new JLabel("登录账号"));
+        add(new JLabel("账号"));
         usr = new JTextField(7);
         add(usr);
 
