@@ -7,7 +7,6 @@ import java.awt.event.*;
 import java.sql.*;
 
 import java.awt.*;
-import java.util.Random;
 import java.util.Vector;
 
 import javax.swing.*;
@@ -154,7 +153,7 @@ public class MyFrame extends JFrame
     }
 
     // 展示最短路可视化对话框
-    private void showMapJframe()
+    private void showMapJFrame()
     {
         JFrame frame = new JFrame();
         frame = new JFrame();
@@ -681,7 +680,7 @@ public class MyFrame extends JFrame
         // 测试按钮
         shortestPathVisible.addActionListener(e ->
         {
-            showMapJframe();
+            showMapJFrame();
         });
 
         addDistanceInfo.addActionListener(e ->
