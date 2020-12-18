@@ -623,7 +623,7 @@ public class MyFrame extends JFrame
 
     public MyFrame(String title)
     {
-        super("8003119075 钟雨初");
+        super(title);
 
         // 不断弹出登录窗口，直到登录成功
         if (isdebug == false)

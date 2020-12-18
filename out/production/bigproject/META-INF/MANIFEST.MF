@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-Main-Class: my.SwingDemo
+Main-Class: my.zyc_village_information_editor
 
