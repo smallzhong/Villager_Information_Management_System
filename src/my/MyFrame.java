@@ -651,13 +651,13 @@ public class MyFrame extends JFrame
         // 菜单 文件
         JMenu fileMenu = new JMenu("视图");
         menubar.add(fileMenu);
-        JMenuItem fileOpenCmd = new JMenuItem("村庄位置信息");
-        JMenuItem fileSaveCmd = new JMenuItem("视图2");
-        JMenuItem fileSaveAsCmd = new JMenuItem("村民信息");
+        JMenuItem villagePosView = new JMenuItem("村庄位置信息");
+        JMenuItem view2 = new JMenuItem("视图2");
+        JMenuItem villagerInfoView = new JMenuItem("村民信息");
         JMenuItem shortestPathVisible = new JMenuItem("展示最短路可视化对话框");
-        fileMenu.add(fileOpenCmd);
-        fileMenu.add(fileSaveCmd);
-        fileMenu.add(fileSaveAsCmd);
+        fileMenu.add(villagerInfoView);
+//        fileMenu.add(fileSaveCmd);
+        fileMenu.add(villagePosView);
         fileMenu.add(shortestPathVisible);
 
         JMenuItem fileExitCmd = new JMenuItem("退出");
@@ -814,9 +814,9 @@ public class MyFrame extends JFrame
         // 退出事件响应
         fileExitCmd.addActionListener(e -> System.exit(0));
         // 切换到村民信息视图
-        fileOpenCmd.addActionListener(e -> switchCard(1));
-        fileSaveCmd.addActionListener(e -> switchCard(0));
-        fileSaveAsCmd.addActionListener(e -> switchCard(2));
+        villagePosView.addActionListener(e -> switchCard(1));
+        view2.addActionListener(e -> switchCard(0));
+        villagerInfoView.addActionListener(e -> switchCard(2));
 //        fileOpenCmd.addActionListener(e ->
 //                JOptionPane.showMessageDialog(null, "钟雨初", "InfoBox: ", JOptionPane.INFORMATION_MESSAGE));
 
@@ -1516,9 +1516,9 @@ public class MyFrame extends JFrame
 
                 // 添加到table中去
                 Vector<Object> rowData = new Vector<>();
+                rowData.add(village_name);
                 rowData.add(x);
                 rowData.add(y);
-                rowData.add(village_name);
                 DistancetableModel.addRow(rowData);
             }
 
@@ -1676,15 +1676,17 @@ public class MyFrame extends JFrame
         // 创建第一个面板
         JPanel p1 = new JPanel();
 
-        p1.setLayout(new FlowLayout());
+//        p1.setLayout(new FlowLayout());
+        // 设置为BorderLayout边框布局
+        p1.setLayout(new BorderLayout());
         JScrollPane scrollPane = new JScrollPane(Distancetable);
         Distancetable.setFillsViewportHeight(true); // 把高度剩下的部分用白色填满
         Distancetable.setRowSelectionAllowed(true); // 整行选择(这一条的作用不明)
         p1.add(scrollPane);
 
+        DistancetableModel.addColumn("村庄名");
         DistancetableModel.addColumn("该村在地图上的x坐标");
         DistancetableModel.addColumn("该村在地图上的y坐标");
-        DistancetableModel.addColumn("村庄名");
 
         setDistanceInfo();
 
