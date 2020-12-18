@@ -16,7 +16,7 @@ import javax.swing.table.DefaultTableModel;
 public class MyFrame extends JFrame
 {
     // 调试时设置为true，发布时设置为false
-    private final boolean isdebug = false;
+    private final boolean isdebug = true;
 
     int[][] barrier = {{2, 0, 1, 0, 0, 2, 2, 2, 2, 2, 0, 2, 1, 1, 2, 2, 0, 1, 2, 0, 2, 0, 2, 2, 0, 2, 2, 0, 0, 0, 0, 1},
             {1, 0, 2, 2, 2, 0, 2, 2, 2, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 2, 1, 2, 2, 1},
@@ -1137,7 +1137,7 @@ public class MyFrame extends JFrame
         menu.add(deleteMenuCmd);
         menu.add(updateMenuCmd);
         menu.add(addMenuCmd);
-        menu.add(testRightClickButton);
+//        menu.add(testRightClickButton);
 
         // 测试按钮
         testRightClickButton.addActionListener(ee ->
@@ -1820,18 +1820,18 @@ public class MyFrame extends JFrame
         // Content Pane
         JPanel panel3 = new JPanel();
 //        this.setContentPane(root); // 设置为默认背景
-//        panel3.setLayout(new BorderLayout());
-        panel3.setLayout(new FlowLayout());
+        panel3.setLayout(new BorderLayout());
+//        panel3.setLayout(new FlowLayout());
 
         UpdateVillageCombobox();
-        panel3.add(VillageCombobox);
+        panel3.add(VillageCombobox, BorderLayout.NORTH);
 
         // 添加到主界面
         JScrollPane scrollPane = new JScrollPane(Villagerrtable);
         Villagerrtable.setFillsViewportHeight(true); // 把高度剩下的部分用白色填满
         Villagerrtable.setRowSelectionAllowed(true); // 整行选择(这一条的作用不明)
-//        panel3.add(scrollPane, BorderLayout.CENTER);
-        panel3.add(scrollPane);
+        panel3.add(scrollPane, BorderLayout.CENTER);
+//        panel3.add(scrollPane, BorderLayout.SOUTH);
 
         // 初始化设置：添加5列
         VillagertableModel.addColumn("村庄");
