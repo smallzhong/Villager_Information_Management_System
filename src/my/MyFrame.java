@@ -627,7 +627,7 @@ public class MyFrame extends JFrame
         // 不断弹出登录窗口，直到登录成功
         if (isdebug == false)
         {
-            while (!login())
+            if (!login())
             {
                 JOptionPane.showMessageDialog(null,
                         "登录失败，用户名或密码错误！请重新登录！",
