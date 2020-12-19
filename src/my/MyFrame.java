@@ -96,8 +96,8 @@ public class MyFrame extends JFrame
     // 指示是否需要更新Combobox中的元素的Flag
     boolean UpdateComboboxFlag = true;
 
-    private int ZYC_WIDTH = 1000;
-    private final int ZYC_HEIGHT = 750;
+    static private final int ZYC_WIDTH = 1000;
+    static private final int ZYC_HEIGHT = 750;
 
     JComboBox<String> startPointComboBox = null;
     JComboBox<String> endPointCombobox = null;
@@ -1293,7 +1293,6 @@ public class MyFrame extends JFrame
             }
 
         });
-
 
         deleteMenuCmd.addActionListener(ee ->
         {
