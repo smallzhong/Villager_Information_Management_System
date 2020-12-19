@@ -262,12 +262,6 @@ public class MyFrame extends JFrame
 
             // 解决了之后重绘一遍
             roadMap.repaint();
-
-//            paintStartPointAndEndPoint();
-//
-//            // 开始解题，设置issolving = true
-//            issolving = true;
-//            roadMap.repaint();
         });
     }
 
@@ -677,7 +671,7 @@ public class MyFrame extends JFrame
         operateMenu.add(deleteSelectedItem);
         operateMenu.add(addItem);
 
-        // 测试按钮
+        // 展示地图按钮
         shortestPathVisible.addActionListener(e ->
         {
             showMapJFrame();
