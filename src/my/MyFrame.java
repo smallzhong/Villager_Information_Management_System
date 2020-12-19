@@ -219,7 +219,7 @@ public class MyFrame extends JFrame
         });
 
         JButton refreshCombobox = new JButton("刷新村庄信息");
-        panel.add(refreshCombobox);
+//        panel.add(refreshCombobox);
         refreshCombobox.addActionListener(e ->
         {
             // 如果两个一样，说明用户没有对村庄进行选择
@@ -1661,12 +1661,11 @@ public class MyFrame extends JFrame
         // 创建第一个面板
         JPanel p1 = new JPanel();
 
-//        p1.setLayout(new FlowLayout());
         // 设置为BorderLayout边框布局
         p1.setLayout(new BorderLayout());
         JScrollPane scrollPane = new JScrollPane(Distancetable);
         Distancetable.setFillsViewportHeight(true); // 把高度剩下的部分用白色填满
-        Distancetable.setRowSelectionAllowed(true); // 整行选择(这一条的作用不明)
+        Distancetable.setRowSelectionAllowed(true); // 整行选择
         p1.add(scrollPane);
 
         DistancetableModel.addColumn("村庄名");
@@ -1814,7 +1813,7 @@ public class MyFrame extends JFrame
         // 添加到主界面
         JScrollPane scrollPane = new JScrollPane(Villagerrtable);
         Villagerrtable.setFillsViewportHeight(true); // 把高度剩下的部分用白色填满
-        Villagerrtable.setRowSelectionAllowed(true); // 整行选择(这一条的作用不明)
+        Villagerrtable.setRowSelectionAllowed(true); // 整行选择
         panel3.add(scrollPane, BorderLayout.CENTER);
 //        panel3.add(scrollPane, BorderLayout.SOUTH);
 
