@@ -551,12 +551,12 @@ public class MyFrame extends JFrame
                     }
 
                     // 如果这个曾经入过队而且设置了展示搜索路径
-                    if (vis[i][j] == true && showInq)
+                    if (vis[i][j] && showInq)
                     {
                         g.setColor(Color.RED);
                         g.fillRect(i * CSIZE, j * CSIZE, CSIZE, CSIZE);
                     }
-                    if (ispath[i][j] == true)
+                    if (ispath[i][j])
                     {
                         g.setColor(Color.PINK);
                         g.fillRect(i * CSIZE, j * CSIZE, CSIZE, CSIZE);
