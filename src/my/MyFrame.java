@@ -536,10 +536,8 @@ public class MyFrame extends JFrame
             }
         }
 
-        // TODO：设置墙壁障碍
         private void setWalls(Graphics g)
         {
-
             for (int i = 0; i < cell_ct; i++)
             {
                 for (int j = 0; j < cell_ct; j++)
@@ -1869,6 +1867,4 @@ public class MyFrame extends JFrame
             cardLayout.show(cards, "table");
         }
     }
-
-
 }
