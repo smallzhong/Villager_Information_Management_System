@@ -16,7 +16,7 @@ import javax.swing.table.DefaultTableModel;
 public class MyFrame extends JFrame
 {
     // 调试时设置为true，发布时设置为false
-    private final boolean isdebug = false;
+    private final boolean isdebug = true;
 
     int[][] barrier = {{2, 0, 1, 0, 0, 2, 2, 2, 2, 2, 0, 2, 1, 1, 2, 2, 0, 1, 2, 0, 2, 0, 2, 2, 0, 2, 2, 0, 0, 0, 0, 1},
             {1, 0, 2, 2, 2, 0, 2, 2, 2, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 2, 1, 2, 2, 1},
@@ -646,10 +646,12 @@ public class MyFrame extends JFrame
         JMenuItem villagePosView = new JMenuItem("村庄位置信息");
         JMenuItem view2 = new JMenuItem("视图2");
         JMenuItem villagerInfoView = new JMenuItem("村民信息");
+        JMenuItem searchVillager = new JMenuItem("搜索村民");
         JMenuItem shortestPathVisible = new JMenuItem("展示最短路可视化对话框");
         fileMenu.add(villagerInfoView);
 //        fileMenu.add(fileSaveCmd);
         fileMenu.add(villagePosView);
+        // fileMenu.add(searchVillager);
         fileMenu.add(shortestPathVisible);
 
         JMenuItem fileExitCmd = new JMenuItem("退出");
@@ -809,6 +811,7 @@ public class MyFrame extends JFrame
         villagePosView.addActionListener(e -> switchCard(1));
         view2.addActionListener(e -> switchCard(0));
         villagerInfoView.addActionListener(e -> switchCard(2));
+        searchVillager.addActionListener(e -> switchCard(3));
 //        fileOpenCmd.addActionListener(e ->
 //                JOptionPane.showMessageDialog(null, "钟雨初", "InfoBox: ", JOptionPane.INFORMATION_MESSAGE));
 
@@ -822,11 +825,13 @@ public class MyFrame extends JFrame
         JPanel p1 = panel1();
         JPanel p2 = panel2();
         JPanel p3 = panel3();
+        JPanel p4 = panel4();
 
         cards.setLayout(new CardLayout());
         cards.add(p1, "buttons"); // 添加第一张卡片, 名字叫 buttons
         cards.add(p2, "text"); // 添加第二张卡片，名字叫 text
         cards.add(p3, "table");
+        cards.add(p4, "search");
 
         switchCard(2);
     }
@@ -1866,5 +1871,14 @@ public class MyFrame extends JFrame
         {
             cardLayout.show(cards, "table");
         }
+        else if (cardnum == 3)
+        {
+            cardLayout.show(cards, "search");
+        }
+    }
+    JPanel panel4()
+    {
+        JPanel t = new JPanel();
+        return t;
     }
 }
